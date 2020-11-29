@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{6A8A6CCE-3D3E-4960-A3F3-B8A9C316646A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepoTools", "RepoTools\RepoTools.csproj", "{F82CCAD2-7101-4453-9E37-8AB5BB6E7750}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A8A6CCE-3D3E-4960-A3F3-B8A9C316646A}.Debug|x86.ActiveCfg = Debug|x86
+		{6A8A6CCE-3D3E-4960-A3F3-B8A9C316646A}.Debug|x86.Build.0 = Debug|x86
+		{6A8A6CCE-3D3E-4960-A3F3-B8A9C316646A}.Release|x86.ActiveCfg = Release|x86
+		{6A8A6CCE-3D3E-4960-A3F3-B8A9C316646A}.Release|x86.Build.0 = Release|x86
+		{F82CCAD2-7101-4453-9E37-8AB5BB6E7750}.Debug|x86.ActiveCfg = Debug|x86
+		{F82CCAD2-7101-4453-9E37-8AB5BB6E7750}.Debug|x86.Build.0 = Debug|x86
+		{F82CCAD2-7101-4453-9E37-8AB5BB6E7750}.Release|x86.ActiveCfg = Release|x86
+		{F82CCAD2-7101-4453-9E37-8AB5BB6E7750}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9ADC3BE-6E7C-41B3-AB0D-DEE3AC1D14A2}
+	EndGlobalSection
+EndGlobal
