@@ -1,0 +1,3 @@
+^/shared/IG/Bin/All/trunk Bin/All
+^/shared/IG/Config/Base/trunk Config/Base
+^/shared/IG/Config/Test/CZ/Brno/DemoRoom1/trunk Config/TestEnv1
