@@ -19,19 +19,19 @@ namespace Deployer.Repo
 			this.dBase = dBase;
 		}
 
-		public enum EInstType
-		{
-			Head,
-			Candidate,
-			Final
-		}
+		//public enum EInstType
+		//{
+		//	Head,
+		//	Candidate,
+		//	Final
+		//}
 
-		public EInstType InstType { get; }
-		public string VersionName { get; }
+		//public EInstType InstType { get; }
+		//public string VersionName { get; }
 		
 		
-		public string InstSegm = "IL/Holon/BigEnv1";
-		public string GetRootPath() => dBase.GetInstRoot(InstSegm);
+		//public string InstSegm = "IL/Holon/BigEnv1";
+		//public string GetRootPath() => dBase.GetInstRootUrl(InstSegm);
 	
 	}
 }

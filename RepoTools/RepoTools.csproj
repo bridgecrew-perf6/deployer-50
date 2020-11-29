@@ -69,6 +69,7 @@
     <Compile Include="DRepoSect.cs" />
     <Compile Include="DScanInst.cs" />
     <Compile Include="DRelMaker.cs" />
+    <Compile Include="DScanRelease.cs" />
     <Compile Include="DScanModule.cs" />
     <Compile Include="DScanTempl.cs" />
     <Compile Include="DSectTempl.cs" />

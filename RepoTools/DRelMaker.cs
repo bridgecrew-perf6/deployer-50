@@ -66,8 +66,17 @@ namespace Deployer.Repo
 				if( !client.GetProperty( new SvnUriTarget( externalsHostUrl ), "svn:externals", out externalsPropVal ))
 					return false;
 
-				if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
-					return false;
+				if( !String.IsNullOrEmpty( externalsPropVal ) )
+				{
+
+					if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
+						return false;
+				}
+				else
+				{
+					// empty array
+					extItems = new SvnExternalItem[0];
+				}
 			}
 
 			// modify each of them (will create new tags if needed on referenced shared resources!)
@@ -112,6 +121,7 @@ namespace Deployer.Repo
 
 
 			// update its root externals
+			if( extItems.Length > 0 )
 			{
 				// reassemble value from parsed items
 				var sb = new StringBuilder();

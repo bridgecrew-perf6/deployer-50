@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using NLog;
 using SharpSvn;
 using Deployer.Repo;
-
+	
 namespace Deployer
 {
 	static class Program
@@ -19,6 +19,9 @@ namespace Deployer
 		[STAThread]
 		static void Main()
 		{
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+
 			//// setup logging
 			//var logFileName = "DistroMaker.log";
 			//if (!String.IsNullOrEmpty(logFileName))
@@ -35,10 +38,9 @@ namespace Deployer
 			//Test5();
 			//Test6();
 			//Test7();
-			Test8();
+			//Test8();
+			Test9();
 
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new FrmMain());
 		}
 
@@ -178,5 +180,29 @@ namespace Deployer
 			var res = ReleaseMaker.Copy( client, srcUrl, destUrl, ReleaseMaker.EPinType.Tag, releaseName );
 		}
 
+		static void Test9()
+		{
+			var client = new SvnClient();
+			var ctx = Context.Instance;
+			ctx.dBase.svnClient = new SvnClient();
+			var cwd = System.IO.Directory.GetCurrentDirectory().Replace('\\', '/');
+			ctx.dBase.RepoRootUrl = $"file:///{cwd}/Data/repo";
+			ctx.ScanRepo();
+			if( !String.IsNullOrEmpty( ctx.CurrentModule ) && ctx.CurrentModuleReleases.Count > 0 )
+			{
+				string releaseBaseUrl = ctx.dBase.GetReleaseModuleUrl( ctx.CurrentModule ); 
+				string srcReleaseName = ctx.CurrentModuleReleases[0];
+				string destReleaseName = "candidate/0.0.1";
+				ReleaseMaker.Copy(
+					ctx.dBase.svnClient, 
+					$"{releaseBaseUrl}/{srcReleaseName}",
+					$"{releaseBaseUrl}/{destReleaseName}",
+					ReleaseMaker.EPinType.Branch,
+					destReleaseName
+				);
+
+
+			}
+		}
 	}
 }

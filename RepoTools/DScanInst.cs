@@ -21,12 +21,12 @@ namespace Deployer.Repo
 		//  install/The/Site/Name/Ends/Here/branches
 		//  install/The/Site/Name/Ends/Here/tags
 
-		/// <param name="url">must point to the "installs" area of the repository</param>
+		/// <param name="url">must point to the "install" area of the repository</param>
 		/// <returns>false on some error</returns>
 		public static bool Scan( SvnClient client, string url, out List<string> installs )
 		{
 			string[] stoppers = new string[] { "trunk", "branches", "tags" };
-			return RepoScanner.Scan( client, url, stoppers, out installs );
+			return RepoScanner.ScanTillStopper( client, url, stoppers, out installs );
 		}
 	}
 

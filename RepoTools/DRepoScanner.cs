@@ -24,7 +24,7 @@ namespace Deployer.Repo
 
 		/// <param name="url">must point to the "installs" area of the repository</param>
 		/// <returns>false on some error</returns>
-		public static bool Scan( SvnClient client, string baseUrl, string[] stoppers, out List<string> subPaths )
+		public static bool ScanTillStopper( SvnClient client, string baseUrl, string[] stoppers, out List<string> subPaths )
 		{
 			subPaths = new List<string>();	
 
@@ -113,6 +113,65 @@ namespace Deployer.Repo
 		}
 
 
+		/// <summary>
+		/// Scans from given root till the leaf directory.
+		/// Under the root there must be at least two levels (intermediat and final).
+		/// The names returned contain all the levels
+		/// </summary>
+		/// <returns>true if succefull (results list filled)</returns>
+		public static bool ScanTillLeaf( SvnClient client, string baseUrl, int minDepth, out List<string> results )
+		{
+			results = new List<string>();	
+
+			if( !CheckChildrenLeaf( client, new Uri( baseUrl ), "", 0, minDepth, ref results ) )
+				return false;
+
+			return true;
+		}
+
+		// lists immediate children;
+		// if no one found (leaf) and depth >= minLevel, add the path to the result
+		public static bool CheckChildrenLeaf( SvnClient client, Uri uri, string subPath, int depth, int minDepth, ref List<string> results )
+		{
+			Collection<SvnListEventArgs> list;
+			SvnListArgs args = new SvnListArgs();
+			args.Depth = SvnDepth.Children;
+			args.IncludeExternals = false;
+			if( !client.GetList( new SvnUriTarget( uri ), args, out list ) )
+				return false;
+
+			// if leaf
+			if( list.Count <= 1 )
+			{
+				if( depth >= minDepth )
+				{
+					results.Add( subPath );
+				}
+				return true;
+			}
+
+			bool first = true;
+			foreach( var li in list )
+			{
+				// skip first item as it is the base directory
+				if( first )
+				{
+					first = false;
+					continue;
+				}
+
+				if( li.Entry.NodeKind == SvnNodeKind.Directory )
+				{
+					// continue recursion
+					var childrenSubPath = String.IsNullOrEmpty(subPath) ? li.Name : $"{subPath}/{li.Name}";
+					var childrenDepth = depth + 1;
+					if( !CheckChildrenLeaf( client, li.Uri, childrenSubPath, childrenDepth, minDepth, ref results ) )
+						return false;
+				}
+			}
+			
+			return true;
+		}
 	}
 
 

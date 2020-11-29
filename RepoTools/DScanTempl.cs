@@ -29,7 +29,7 @@ namespace Deployer.Repo
 		public static bool Scan( SvnClient client, string rootUrl, out List<string> modules )
 		{
 			string[] stoppers = new string[] { "Content" };
-			return RepoScanner.Scan( client, rootUrl, stoppers, out modules );
+			return RepoScanner.ScanTillStopper( client, rootUrl, stoppers, out modules );
 		}
 
 		

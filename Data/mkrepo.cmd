@@ -33,27 +33,29 @@ mkdir shared\IG\Config\Test\CZ\Brno
 mkdir shared\IG\Config\Test\CZ\Brno\DemoRoom1
 mkdir shared\IG\Config\Test\CZ\Brno\DemoRoom1\trunk
 
-mkdir releases
-mkdir releases\IG
-mkdir releases\IG\head
-mkdir releases\IG\candidate
-mkdir releases\IG\final
+mkdir release
+mkdir release\IG
+mkdir release\IG\head
+mkdir release\IG\head\Master
+mkdir release\IG\candidate
+mkdir release\IG\final
 
-mkdir installs
-mkdir installs\CZ
-mkdir installs\CZ\Brno
-mkdir installs\CZ\Brno\Evn1
-mkdir installs\CZ\Brno\Evn1\trunk
-mkdir installs\CZ\Brno\Evn1\trunk\IG
-mkdir installs\CZ\Brno\Evn1\trunk\IG\Bin
-mkdir installs\CZ\Brno\Evn1\trunk\IG\Config
-mkdir installs\CZ\Brno\Evn1\trunk\IG\Data
-mkdir installs\CZ\Brno\Evn1\trunk\Spec
-mkdir installs\CZ\Brno\Evn1\trunk\Spec\IG
-echo --- > installs\CZ\Brno\Evn1\trunk\Spec\IG\custom.lua
+mkdir install
+mkdir install\CZ
+mkdir install\CZ\Brno
+mkdir install\CZ\Brno\Evn1
+mkdir install\CZ\Brno\Evn1\trunk
+mkdir install\CZ\Brno\Evn1\trunk\IG
+mkdir install\CZ\Brno\Evn1\trunk\IG\Bin
+mkdir install\CZ\Brno\Evn1\trunk\IG\Config
+mkdir install\CZ\Brno\Evn1\trunk\IG\Data
+mkdir install\CZ\Brno\Evn1\trunk\Spec
+mkdir install\CZ\Brno\Evn1\trunk\Spec\IG
+echo --- > install\CZ\Brno\Evn1\trunk\Spec\IG\custom.lua
+
 
 svn add *
-svn propset svn:externals -F ..\externals-IG-head.txt releases/IG/head
+svn propset svn:externals -F ..\externals-IG-head.txt release/IG/head/Master
 svn commit -m "initial"
 
 popd
