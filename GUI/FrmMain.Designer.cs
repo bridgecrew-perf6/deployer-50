@@ -28,14 +28,15 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.btnRel = new System.Windows.Forms.Button();
 			this.btnInst = new System.Windows.Forms.Button();
-			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.lbModules = new System.Windows.Forms.ListBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.listBox2 = new System.Windows.Forms.ListBox();
+			this.lbReleases = new System.Windows.Forms.ListBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.listBox3 = new System.Windows.Forms.ListBox();
+			this.lbInstalls = new System.Windows.Forms.ListBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
@@ -54,12 +55,15 @@
 			this.button12 = new System.Windows.Forms.Button();
 			this.listBox4 = new System.Windows.Forms.ListBox();
 			this.label6 = new System.Windows.Forms.Label();
+			this.bsModules = new System.Windows.Forms.BindingSource(this.components);
+			this.button13 = new System.Windows.Forms.Button();
+			((System.ComponentModel.ISupportInitialize)(this.bsModules)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btnRel
 			// 
 			this.btnRel.Location = new System.Drawing.Point(1281, 57);
-			this.btnRel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btnRel.Margin = new System.Windows.Forms.Padding(2);
 			this.btnRel.Name = "btnRel";
 			this.btnRel.Size = new System.Drawing.Size(104, 45);
 			this.btnRel.TabIndex = 0;
@@ -70,7 +74,7 @@
 			// btnInst
 			// 
 			this.btnInst.Location = new System.Drawing.Point(1281, 117);
-			this.btnInst.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btnInst.Margin = new System.Windows.Forms.Padding(2);
 			this.btnInst.Name = "btnInst";
 			this.btnInst.Size = new System.Drawing.Size(104, 45);
 			this.btnInst.TabIndex = 1;
@@ -78,18 +82,15 @@
 			this.btnInst.UseVisualStyleBackColor = true;
 			this.btnInst.Click += new System.EventHandler(this.btnInst_Click);
 			// 
-			// listBox1
+			// lbModules
 			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.ItemHeight = 16;
-			this.listBox1.Items.AddRange(new object[] {
-            "IG",
-            "TrackingSystem"});
-			this.listBox1.Location = new System.Drawing.Point(19, 105);
-			this.listBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(180, 116);
-			this.listBox1.TabIndex = 2;
+			this.lbModules.FormattingEnabled = true;
+			this.lbModules.ItemHeight = 16;
+			this.lbModules.Location = new System.Drawing.Point(19, 105);
+			this.lbModules.Margin = new System.Windows.Forms.Padding(2);
+			this.lbModules.Name = "lbModules";
+			this.lbModules.Size = new System.Drawing.Size(180, 116);
+			this.lbModules.TabIndex = 2;
 			// 
 			// label1
 			// 
@@ -111,20 +112,20 @@
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Releases";
 			// 
-			// listBox2
+			// lbReleases
 			// 
-			this.listBox2.FormattingEnabled = true;
-			this.listBox2.ItemHeight = 16;
-			this.listBox2.Items.AddRange(new object[] {
+			this.lbReleases.FormattingEnabled = true;
+			this.lbReleases.ItemHeight = 16;
+			this.lbReleases.Items.AddRange(new object[] {
             "Head",
             "Candidate/2.0.7",
             "Candidate/2.1.0",
             "Final/2.0.7"});
-			this.listBox2.Location = new System.Drawing.Point(244, 105);
-			this.listBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-			this.listBox2.Name = "listBox2";
-			this.listBox2.Size = new System.Drawing.Size(180, 116);
-			this.listBox2.TabIndex = 4;
+			this.lbReleases.Location = new System.Drawing.Point(244, 105);
+			this.lbReleases.Margin = new System.Windows.Forms.Padding(2);
+			this.lbReleases.Name = "lbReleases";
+			this.lbReleases.Size = new System.Drawing.Size(180, 116);
+			this.lbReleases.TabIndex = 4;
 			// 
 			// label3
 			// 
@@ -136,23 +137,23 @@
 			this.label3.TabIndex = 7;
 			this.label3.Text = "Installs";
 			// 
-			// listBox3
+			// lbInstalls
 			// 
-			this.listBox3.FormattingEnabled = true;
-			this.listBox3.ItemHeight = 16;
-			this.listBox3.Items.AddRange(new object[] {
+			this.lbInstalls.FormattingEnabled = true;
+			this.lbInstalls.ItemHeight = 16;
+			this.lbInstalls.Items.AddRange(new object[] {
             "CZ/Brno/MainEnv",
             "IL/Holon/BigIntegEnv1"});
-			this.listBox3.Location = new System.Drawing.Point(469, 105);
-			this.listBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-			this.listBox3.Name = "listBox3";
-			this.listBox3.Size = new System.Drawing.Size(180, 116);
-			this.listBox3.TabIndex = 6;
+			this.lbInstalls.Location = new System.Drawing.Point(469, 105);
+			this.lbInstalls.Margin = new System.Windows.Forms.Padding(2);
+			this.lbInstalls.Name = "lbInstalls";
+			this.lbInstalls.Size = new System.Drawing.Size(180, 116);
+			this.lbInstalls.TabIndex = 6;
 			// 
 			// button1
 			// 
 			this.button1.Location = new System.Drawing.Point(19, 229);
-			this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button1.Margin = new System.Windows.Forms.Padding(2);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(65, 29);
 			this.button1.TabIndex = 8;
@@ -162,7 +163,7 @@
 			// button2
 			// 
 			this.button2.Location = new System.Drawing.Point(97, 229);
-			this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button2.Margin = new System.Windows.Forms.Padding(2);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(69, 29);
 			this.button2.TabIndex = 9;
@@ -172,7 +173,7 @@
 			// button3
 			// 
 			this.button3.Location = new System.Drawing.Point(244, 229);
-			this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button3.Margin = new System.Windows.Forms.Padding(2);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(64, 29);
 			this.button3.TabIndex = 8;
@@ -182,7 +183,7 @@
 			// button4
 			// 
 			this.button4.Location = new System.Drawing.Point(324, 229);
-			this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button4.Margin = new System.Windows.Forms.Padding(2);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(68, 29);
 			this.button4.TabIndex = 9;
@@ -192,7 +193,7 @@
 			// button5
 			// 
 			this.button5.Location = new System.Drawing.Point(244, 284);
-			this.button5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button5.Margin = new System.Windows.Forms.Padding(2);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(148, 32);
 			this.button5.TabIndex = 8;
@@ -202,7 +203,7 @@
 			// button6
 			// 
 			this.button6.Location = new System.Drawing.Point(244, 327);
-			this.button6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button6.Margin = new System.Windows.Forms.Padding(2);
 			this.button6.Name = "button6";
 			this.button6.Size = new System.Drawing.Size(148, 33);
 			this.button6.TabIndex = 8;
@@ -212,7 +213,7 @@
 			// button7
 			// 
 			this.button7.Location = new System.Drawing.Point(244, 370);
-			this.button7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button7.Margin = new System.Windows.Forms.Padding(2);
 			this.button7.Name = "button7";
 			this.button7.Size = new System.Drawing.Size(148, 31);
 			this.button7.TabIndex = 10;
@@ -222,7 +223,7 @@
 			// button8
 			// 
 			this.button8.Location = new System.Drawing.Point(469, 283);
-			this.button8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button8.Margin = new System.Windows.Forms.Padding(2);
 			this.button8.Name = "button8";
 			this.button8.Size = new System.Drawing.Size(149, 33);
 			this.button8.TabIndex = 8;
@@ -233,7 +234,7 @@
 			// button9
 			// 
 			this.button9.Location = new System.Drawing.Point(469, 229);
-			this.button9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button9.Margin = new System.Windows.Forms.Padding(2);
 			this.button9.Name = "button9";
 			this.button9.Size = new System.Drawing.Size(71, 29);
 			this.button9.TabIndex = 8;
@@ -243,7 +244,7 @@
 			// button10
 			// 
 			this.button10.Location = new System.Drawing.Point(554, 229);
-			this.button10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button10.Margin = new System.Windows.Forms.Padding(2);
 			this.button10.Name = "button10";
 			this.button10.Size = new System.Drawing.Size(64, 29);
 			this.button10.TabIndex = 9;
@@ -263,7 +264,7 @@
 			// textBox1
 			// 
 			this.textBox1.Location = new System.Drawing.Point(62, 19);
-			this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.textBox1.Margin = new System.Windows.Forms.Padding(2);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(321, 22);
 			this.textBox1.TabIndex = 11;
@@ -272,7 +273,7 @@
 			// button11
 			// 
 			this.button11.Location = new System.Drawing.Point(395, 19);
-			this.button11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button11.Margin = new System.Windows.Forms.Padding(2);
 			this.button11.Name = "button11";
 			this.button11.Size = new System.Drawing.Size(57, 23);
 			this.button11.TabIndex = 8;
@@ -292,7 +293,7 @@
 			// textBox2
 			// 
 			this.textBox2.Location = new System.Drawing.Point(469, 341);
-			this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.textBox2.Margin = new System.Windows.Forms.Padding(2);
 			this.textBox2.Name = "textBox2";
 			this.textBox2.Size = new System.Drawing.Size(171, 22);
 			this.textBox2.TabIndex = 11;
@@ -301,7 +302,7 @@
 			// button12
 			// 
 			this.button12.Location = new System.Drawing.Point(469, 371);
-			this.button12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.button12.Margin = new System.Windows.Forms.Padding(2);
 			this.button12.Name = "button12";
 			this.button12.Size = new System.Drawing.Size(149, 31);
 			this.button12.TabIndex = 8;
@@ -322,7 +323,7 @@
             "Specs/Sim",
             "Specs/Station"});
 			this.listBox4.Location = new System.Drawing.Point(19, 300);
-			this.listBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.listBox4.Margin = new System.Windows.Forms.Padding(2);
 			this.listBox4.Name = "listBox4";
 			this.listBox4.Size = new System.Drawing.Size(180, 148);
 			this.listBox4.TabIndex = 2;
@@ -337,11 +338,26 @@
 			this.label6.TabIndex = 3;
 			this.label6.Text = "Shared Resources";
 			// 
+			// bsModules
+			// 
+			this.bsModules.DataSource = typeof(Deployer.Context);
+			// 
+			// button13
+			// 
+			this.button13.Location = new System.Drawing.Point(244, 416);
+			this.button13.Margin = new System.Windows.Forms.Padding(2);
+			this.button13.Name = "button13";
+			this.button13.Size = new System.Drawing.Size(148, 32);
+			this.button13.TabIndex = 12;
+			this.button13.Text = "Copy...";
+			this.button13.UseVisualStyleBackColor = true;
+			// 
 			// FrmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1399, 554);
+			this.Controls.Add(this.button13);
 			this.Controls.Add(this.textBox2);
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.button7);
@@ -357,21 +373,22 @@
 			this.Controls.Add(this.button3);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.label3);
-			this.Controls.Add(this.listBox3);
+			this.Controls.Add(this.lbInstalls);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label5);
-			this.Controls.Add(this.listBox2);
+			this.Controls.Add(this.lbReleases);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.listBox4);
-			this.Controls.Add(this.listBox1);
+			this.Controls.Add(this.lbModules);
 			this.Controls.Add(this.btnInst);
 			this.Controls.Add(this.btnRel);
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.Name = "FrmMain";
 			this.Text = "Deployer";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
+			((System.ComponentModel.ISupportInitialize)(this.bsModules)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -381,12 +398,12 @@
 
 		private System.Windows.Forms.Button btnRel;
 		private System.Windows.Forms.Button btnInst;
-		private System.Windows.Forms.ListBox listBox1;
+		private System.Windows.Forms.ListBox lbModules;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ListBox listBox2;
+		private System.Windows.Forms.ListBox lbReleases;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.ListBox listBox3;
+		private System.Windows.Forms.ListBox lbInstalls;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button button3;
@@ -405,6 +422,8 @@
 		private System.Windows.Forms.Button button12;
 		private System.Windows.Forms.ListBox listBox4;
 		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.BindingSource bsModules;
+		private System.Windows.Forms.Button button13;
 	}
 }
 

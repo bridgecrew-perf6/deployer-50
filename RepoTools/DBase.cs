@@ -23,7 +23,8 @@ namespace Deployer.Repo
 		public string GetSharedRootUrl(string ModuleName) => $"{RepoRootUrl}/{ShrSegm}/{ModuleName}";
 		public string GetReleaseRootUrl() => $"{RepoRootUrl}/{RelSegm}";
 		public string GetReleaseModuleUrl(string ModuleName) => $"{RepoRootUrl}/{RelSegm}/{ModuleName}";
-		public string GetInstRootUrl(string instSubPath, string ModuleName) => $"{RepoRootUrl}/{InstSegm}/{instSubPath}/{ModuleName}";
+		//public string GetInstRootUrl(string instSubPath, string ModuleName) => $"{RepoRootUrl}/{InstSegm}/{instSubPath}/{ModuleName}";
+		public string GetInstallRootUrl() => $"{RepoRootUrl}/{InstSegm}";
 
 		public SvnClient svnClient = new SvnClient();
 
