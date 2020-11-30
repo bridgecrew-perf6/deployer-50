@@ -503,6 +503,14 @@ namespace Deployer.Repo
 			return url;
 		}
 
+		public static bool Delete( SvnClient client, string srcUrl )
+		{
+			SvnDeleteArgs args = new SvnDeleteArgs();
+			args.LogMessage ="";
+			return client.RemoteDelete( new Uri( srcUrl ), args );
+		}
+
+
 
 
 	}

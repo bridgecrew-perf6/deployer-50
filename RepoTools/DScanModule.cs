@@ -21,7 +21,7 @@ namespace Deployer.Repo
 		//  releases/The/Module/Ends/Here/Candidate/2.0.1
 		//  releases/The/Module/Ends/Here/Final/2.0.1
 
-		static string[] Stoppers = new string[] { "head", "integration", "candidate", "final" };
+		public static string[] Stoppers = new string[] { "head", "integration", "candidate", "final" };
 		
 		
 		/// <param name="url">must point to the "releases" area of the repository</param>
