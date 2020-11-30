@@ -24,6 +24,7 @@ namespace Deployer
 			lbModules.DataSource = ctx.Modules;
 			lbReleases.DataSource = ctx.Releases;
 			lbInstalls.DataSource = ctx.Installs;
+			lbExternals.DataSource = ctx.Externals;
 
 			// releases are shown for currently selected module
 			lbModules.SelectedIndexChanged += (object sender, System.EventArgs e) =>
@@ -31,13 +32,14 @@ namespace Deployer
 				int index = lbModules.SelectedIndex;
 				ctx.ModuleIndex = index;
 				ctx.ReloadReleases();
+				ctx.ReloadExternals();
 			};
 
 			lbReleases.SelectedIndexChanged += (object sender, System.EventArgs e) =>
 			{
 				int index = lbReleases.SelectedIndex;
 				ctx.ReleaseIndex = index;
-				//ctx.ReloadXXX();
+				ctx.ReloadExternals();
 			};
 
 		}
@@ -72,13 +74,6 @@ namespace Deployer
 
 		}
 
-		// url of given release for currently selected module
-		string GetReleaseUrl( string relName )
-		{
-			string releaseBaseUrl = ctx.dBase.GetReleaseModuleUrl( ctx.Module ); 
-			return $"{releaseBaseUrl}/{relName}";
-		}
-
 
 		private void btnNewRel_Click(object sender, EventArgs e)
 		{
@@ -93,8 +88,8 @@ namespace Deployer
 				string destReleaseName = f.CompleteName;
 				if( ReleaseMaker.Copy(
 					ctx.dBase.svnClient, 
-					GetReleaseUrl(srcReleaseName),
-					GetReleaseUrl(destReleaseName),
+					ctx.GetReleaseUrl(srcReleaseName),
+					ctx.GetReleaseUrl(destReleaseName),
 					f.PinType,
 					destReleaseName
 				) )
@@ -134,7 +129,7 @@ namespace Deployer
 			{
 				if( ReleaseMaker.Delete(
 					ctx.dBase.svnClient, 
-					GetReleaseUrl(relToDelete)
+					ctx.GetReleaseUrl(relToDelete)
 				) )
 				{
 					ctx.ScanRepo();

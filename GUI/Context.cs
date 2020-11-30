@@ -24,6 +24,11 @@ namespace Deployer
         /// </summary>
         public BindingList<string> Releases = new BindingList<string>();
 
+        /// <summary>
+        /// Externals for current release of current module
+        /// </summary>
+        public BindingList<string> Externals = new BindingList<string>();
+
 
         public int ModuleIndex;
 
@@ -90,10 +95,21 @@ namespace Deployer
             }
         }
 
+		 
+         /// <summary>
+         /// url of given release for currently selected module
+         /// </summary>
+		public string GetReleaseUrl( string relName )
+		{
+			string releaseBaseUrl = dBase.GetReleaseModuleUrl( Module ); 
+			return $"{releaseBaseUrl}/{relName}";
+		}
+
         public void ScanRepo()
         {
             ReloadModules();
             ReloadReleases();
+            ReloadExternals();
             ReloadInstalls();
         }
 
@@ -170,6 +186,35 @@ namespace Deployer
             foreach( var i in installs ) Installs.Add(i);
         }
 
+        public void ReloadExternals()
+        {
+            Externals.Clear();
+            if( !String.IsNullOrEmpty( Release ) )
+            {
+                SharpSvn.SvnExternalItem[] extItems;
+                ReleaseMaker.GetExternals(
+                    dBase.svnClient, 
+                    GetReleaseUrl( Release ),
+                    out extItems
+                );
+
+                foreach( var i in extItems )
+                {
+                    var s = "";
+                    if( i.Revision.RevisionType == SharpSvn.SvnRevisionType.Number )
+                    {
+                        s = $"{i.Target} => {i.Reference}@{i.Revision.Revision}";
+                    }
+                    else
+                    {
+                        s = $"{i.Target} => {i.Reference}";
+                    }
+
+                    Externals.Add( s );
+                }
+            }
+
+        }
 
 
 

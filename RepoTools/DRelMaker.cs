@@ -510,9 +510,27 @@ namespace Deployer.Repo
 			return client.RemoteDelete( new Uri( srcUrl ), args );
 		}
 
+		public static bool GetExternals( SvnClient client, string releaseUrl, out SvnExternalItem[] extItems )
+		{
+			// read externals from the root directory and parse them
+			string externalsHostUrl = releaseUrl;
 
+            //SvnExternalItem[] extItems;
+			extItems = new SvnExternalItem[0];
+			{
+				string externalsPropVal;
+				if( !client.GetProperty( new SvnUriTarget( externalsHostUrl ), "svn:externals", out externalsPropVal ))
+					return false;
 
+				if( !String.IsNullOrEmpty( externalsPropVal ) )
+				{
 
+					if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
+						return false;
+				}
+			}
+			return true;
+		}
 	}
 
 
