@@ -188,10 +188,10 @@ namespace Deployer
 			var cwd = System.IO.Directory.GetCurrentDirectory().Replace('\\', '/');
 			ctx.dBase.RepoRootUrl = $"file:///{cwd}/Data/repo";
 			ctx.ScanRepo();
-			if( !String.IsNullOrEmpty( ctx.CurrentModule ) && ctx.CurrentModuleReleases.Count > 0 )
+			if( !String.IsNullOrEmpty( ctx.Module ) && ctx.Releases.Count > 0 )
 			{
-				string releaseBaseUrl = ctx.dBase.GetReleaseModuleUrl( ctx.CurrentModule ); 
-				string srcReleaseName = ctx.CurrentModuleReleases[0];
+				string releaseBaseUrl = ctx.dBase.GetReleaseModuleUrl( ctx.Module ); 
+				string srcReleaseName = ctx.Releases[0];
 				string destReleaseName = "candidate/0.0.1";
 				ReleaseMaker.Copy(
 					ctx.dBase.svnClient, 

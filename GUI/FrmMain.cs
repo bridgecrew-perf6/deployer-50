@@ -21,21 +21,21 @@ namespace Deployer
 			ctx.ScanRepo();
 			
 			lbModules.DataSource = ctx.Modules;
-			lbReleases.DataSource = ctx.CurrentModuleReleases;
+			lbReleases.DataSource = ctx.Releases;
 			lbInstalls.DataSource = ctx.Installs;
 
 			// releases are shown for currently selected module
 			lbModules.SelectedIndexChanged += (object sender, System.EventArgs e) =>
 			{
 				int index = lbModules.SelectedIndex;
-				ctx.CurrentModule = ( index < 0 ) ? String.Empty : ctx.Modules[index];
+				ctx.ModuleIndex = index;
 				ctx.ReloadReleases();
 			};
 
 			lbReleases.SelectedIndexChanged += (object sender, System.EventArgs e) =>
 			{
 				int index = lbReleases.SelectedIndex;
-				ctx.CurrentRelease = ( index < 0 ) ? String.Empty : ctx.CurrentModuleReleases[index];
+				ctx.ReleaseIndex = index;
 				//ctx.ReloadXXX();
 			};
 

@@ -22,18 +22,44 @@ namespace Deployer
         /// <summary>
         /// Releases for Current Module
         /// </summary>
-        public BindingList<string> CurrentModuleReleases = new BindingList<string>();
+        public BindingList<string> Releases = new BindingList<string>();
+
+
+        public int ModuleIndex;
 
         /// <summary>
         /// Currently selected dmodule
         /// </summary>
-        public string CurrentModule;
+        public string Module
+        {
+            get{
+                if( ModuleIndex < 0 || ModuleIndex >= Modules.Count )
+                    return String.Empty;
+                return Modules[ModuleIndex];
+            }
+            set{
+
+                ModuleIndex = Modules.IndexOf( value );
+            }
+        }
+
+        public int ReleaseIndex;
 
         /// <summary>
         /// Currently selected release
         /// </summary>
-        public string CurrentRelease;
+        public string Release
+        {
+            get{
+                if( ReleaseIndex < 0 ||ReleaseIndex >= Releases.Count )
+                    return String.Empty;
+                return Releases[ReleaseIndex];
+            }
+            set{
 
+                ReleaseIndex = Releases.IndexOf( value );
+            }
+        }
 
         public BindingList<string> Installs = new BindingList<string>();
 
@@ -73,55 +99,61 @@ namespace Deployer
 
         public void ReloadModules()
         {
+            string prevModule = Module;
+
             List<string> modules;
             ModuleScanner.Scan( dBase.svnClient, dBase.GetReleaseRootUrl(), out modules );
             Modules.Clear();        
             foreach( var i in modules ) Modules.Add(i);
 
             // if current module still exists, reload its releases
-            if( !String.IsNullOrEmpty( CurrentModule ) && Modules.Contains( CurrentModule ) )
+            if( !String.IsNullOrEmpty( prevModule ) && Modules.Contains( prevModule ) )
             {
+                ModuleIndex = Modules.IndexOf( prevModule );
             }
             else if( Modules.Count > 0 )
             {
-                CurrentModule = Modules[0];    
+                ModuleIndex = 0;    
             }
             else
             {
-                CurrentModule = String.Empty;
+                ModuleIndex = -1;
             }
         }
 
         public void ReloadReleases()
         {
-            if( !String.IsNullOrEmpty( CurrentModule ) )
+            string prevRelease = Release;
+
+            if( !String.IsNullOrEmpty( Module ) )
             {
                 List<string> releases;
                 ReleaseScanner.Scan(
                     dBase.svnClient,
-                    dBase.GetReleaseModuleUrl(CurrentModule),
+                    dBase.GetReleaseModuleUrl(Module),
                     out releases
                    );
-                CurrentModuleReleases.Clear();
-                foreach( var i in releases ) CurrentModuleReleases.Add(i);
+                Releases.Clear();
+                foreach( var i in releases ) Releases.Add(i);
             }
             else
             {
-                CurrentModuleReleases.Clear();
+                Releases.Clear();
             }
 
 
             // if current release still exist in the list, reload its releases
-            if( !String.IsNullOrEmpty( CurrentRelease ) && CurrentModuleReleases.Contains( CurrentRelease ) )
+            if( !String.IsNullOrEmpty( prevRelease ) && Releases.Contains( prevRelease ) )
             {
+                ReleaseIndex = Releases.IndexOf( prevRelease );
             }
-            else if( Modules.Count > 0 )
+            else if( Releases.Count > 0 )
             {
-                CurrentRelease = CurrentModuleReleases[0];    
+                ReleaseIndex = 0;    
             }
             else
             {
-                CurrentRelease = String.Empty;
+                ReleaseIndex = -1;
             }
         }
 
