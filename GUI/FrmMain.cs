@@ -49,25 +49,6 @@ namespace Deployer
 			ctx.ScanRepo();
 		}
 
-		public void ShowRel()
-		{
-			ctx.frmRel.Show();	
-		}
-
-		public void ShowInst()
-		{
-			ctx.frmInst.Show();
-		}
-
-		private void btnRel_Click(object sender, EventArgs e)
-		{
-			ShowRel();
-		}
-
-		private void btnInst_Click(object sender, EventArgs e)
-		{
-			ShowInst();
-		}
 
 		private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
 		{

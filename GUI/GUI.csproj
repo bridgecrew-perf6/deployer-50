@@ -100,12 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context.cs" />
-    <Compile Include="FrmInst.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmInst.Designer.cs">
-      <DependentUpon>FrmInst.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,25 +112,13 @@
     <Compile Include="FrmNewRel.Designer.cs">
       <DependentUpon>FrmNewRel.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmRel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmRel.Designer.cs">
-      <DependentUpon>FrmRel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FrmInst.resx">
-      <DependentUpon>FrmInst.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNewRel.resx">
       <DependentUpon>FrmNewRel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmRel.resx">
-      <DependentUpon>FrmRel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

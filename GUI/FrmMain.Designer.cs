@@ -29,8 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.btnRel = new System.Windows.Forms.Button();
-			this.btnInst = new System.Windows.Forms.Button();
 			this.lbModules = new System.Windows.Forms.ListBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
@@ -39,21 +37,17 @@
 			this.lbInstalls = new System.Windows.Forms.ListBox();
 			this.btnNewRel = new System.Windows.Forms.Button();
 			this.btnRelRemove = new System.Windows.Forms.Button();
-			this.button5 = new System.Windows.Forms.Button();
-			this.button6 = new System.Windows.Forms.Button();
-			this.button7 = new System.Windows.Forms.Button();
-			this.button8 = new System.Windows.Forms.Button();
-			this.button9 = new System.Windows.Forms.Button();
-			this.button10 = new System.Windows.Forms.Button();
+			this.btnPinInstallToRelease = new System.Windows.Forms.Button();
+			this.btnAddInstall = new System.Windows.Forms.Button();
+			this.btnRemoveInstall = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
 			this.txtRepoUrl = new System.Windows.Forms.TextBox();
 			this.btnScanRepo = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
-			this.textBox2 = new System.Windows.Forms.TextBox();
-			this.button12 = new System.Windows.Forms.Button();
+			this.txtLocalPath = new System.Windows.Forms.TextBox();
+			this.btnCheckout = new System.Windows.Forms.Button();
 			this.lbExternals = new System.Windows.Forms.ListBox();
 			this.label6 = new System.Windows.Forms.Label();
-			this.button14 = new System.Windows.Forms.Button();
 			this.btnEditExternals = new System.Windows.Forms.Button();
 			this.btnEditModule = new System.Windows.Forms.Button();
 			this.btnAddModule = new System.Windows.Forms.Button();
@@ -62,29 +56,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.bsModules)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// btnRel
-			// 
-			this.btnRel.Location = new System.Drawing.Point(1761, 86);
-			this.btnRel.Name = "btnRel";
-			this.btnRel.Size = new System.Drawing.Size(143, 68);
-			this.btnRel.TabIndex = 0;
-			this.btnRel.Text = "Releases";
-			this.btnRel.UseVisualStyleBackColor = true;
-			this.btnRel.Click += new System.EventHandler(this.btnRel_Click);
-			// 
-			// btnInst
-			// 
-			this.btnInst.Location = new System.Drawing.Point(1761, 176);
-			this.btnInst.Name = "btnInst";
-			this.btnInst.Size = new System.Drawing.Size(143, 68);
-			this.btnInst.TabIndex = 1;
-			this.btnInst.Text = "Installs";
-			this.btnInst.UseVisualStyleBackColor = true;
-			this.btnInst.Click += new System.EventHandler(this.btnInst_Click);
-			// 
 			// lbModules
 			// 
 			this.lbModules.FormattingEnabled = true;
+			this.lbModules.HorizontalScrollbar = true;
 			this.lbModules.ItemHeight = 24;
 			this.lbModules.Location = new System.Drawing.Point(24, 117);
 			this.lbModules.Name = "lbModules";
@@ -112,6 +87,7 @@
 			// lbReleases
 			// 
 			this.lbReleases.FormattingEnabled = true;
+			this.lbReleases.HorizontalScrollbar = true;
 			this.lbReleases.ItemHeight = 24;
 			this.lbReleases.Items.AddRange(new object[] {
             "Head",
@@ -120,7 +96,7 @@
             "Final/2.0.7"});
 			this.lbReleases.Location = new System.Drawing.Point(311, 117);
 			this.lbReleases.Name = "lbReleases";
-			this.lbReleases.Size = new System.Drawing.Size(246, 172);
+			this.lbReleases.Size = new System.Drawing.Size(426, 172);
 			this.lbReleases.TabIndex = 4;
 			// 
 			// label3
@@ -135,6 +111,7 @@
 			// lbInstalls
 			// 
 			this.lbInstalls.FormattingEnabled = true;
+			this.lbInstalls.HorizontalScrollbar = true;
 			this.lbInstalls.ItemHeight = 24;
 			this.lbInstalls.Items.AddRange(new object[] {
             "CZ/Prague/MainEnv",
@@ -164,60 +141,33 @@
 			this.btnRelRemove.UseVisualStyleBackColor = true;
 			this.btnRelRemove.Click += new System.EventHandler(this.btnRelRemove_Click);
 			// 
-			// button5
+			// btnPinInstallToRelease
 			// 
-			this.button5.Location = new System.Drawing.Point(585, 117);
-			this.button5.Name = "button5";
-			this.button5.Size = new System.Drawing.Size(152, 48);
-			this.button5.TabIndex = 8;
-			this.button5.Text = "Pin to latest";
-			this.button5.UseVisualStyleBackColor = true;
+			this.btnPinInstallToRelease.Location = new System.Drawing.Point(1074, 117);
+			this.btnPinInstallToRelease.Name = "btnPinInstallToRelease";
+			this.btnPinInstallToRelease.Size = new System.Drawing.Size(117, 50);
+			this.btnPinInstallToRelease.TabIndex = 8;
+			this.btnPinInstallToRelease.Text = "Pin to release";
+			this.btnPinInstallToRelease.UseVisualStyleBackColor = true;
+			this.btnPinInstallToRelease.Click += new System.EventHandler(this.button8_Click);
 			// 
-			// button6
+			// btnAddInstall
 			// 
-			this.button6.Location = new System.Drawing.Point(585, 179);
-			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(152, 50);
-			this.button6.TabIndex = 8;
-			this.button6.Text = "Pin to revision";
-			this.button6.UseVisualStyleBackColor = true;
+			this.btnAddInstall.Location = new System.Drawing.Point(806, 303);
+			this.btnAddInstall.Name = "btnAddInstall";
+			this.btnAddInstall.Size = new System.Drawing.Size(98, 44);
+			this.btnAddInstall.TabIndex = 8;
+			this.btnAddInstall.Text = "Add";
+			this.btnAddInstall.UseVisualStyleBackColor = true;
 			// 
-			// button7
+			// btnRemoveInstall
 			// 
-			this.button7.Location = new System.Drawing.Point(585, 243);
-			this.button7.Name = "button7";
-			this.button7.Size = new System.Drawing.Size(152, 46);
-			this.button7.TabIndex = 10;
-			this.button7.Text = "Make Final";
-			this.button7.UseVisualStyleBackColor = true;
-			// 
-			// button8
-			// 
-			this.button8.Location = new System.Drawing.Point(1074, 117);
-			this.button8.Name = "button8";
-			this.button8.Size = new System.Drawing.Size(117, 50);
-			this.button8.TabIndex = 8;
-			this.button8.Text = "Pin to release";
-			this.button8.UseVisualStyleBackColor = true;
-			this.button8.Click += new System.EventHandler(this.button8_Click);
-			// 
-			// button9
-			// 
-			this.button9.Location = new System.Drawing.Point(806, 303);
-			this.button9.Name = "button9";
-			this.button9.Size = new System.Drawing.Size(98, 44);
-			this.button9.TabIndex = 8;
-			this.button9.Text = "Add";
-			this.button9.UseVisualStyleBackColor = true;
-			// 
-			// button10
-			// 
-			this.button10.Location = new System.Drawing.Point(923, 303);
-			this.button10.Name = "button10";
-			this.button10.Size = new System.Drawing.Size(129, 44);
-			this.button10.TabIndex = 9;
-			this.button10.Text = "Remove";
-			this.button10.UseVisualStyleBackColor = true;
+			this.btnRemoveInstall.Location = new System.Drawing.Point(923, 303);
+			this.btnRemoveInstall.Name = "btnRemoveInstall";
+			this.btnRemoveInstall.Size = new System.Drawing.Size(129, 44);
+			this.btnRemoveInstall.TabIndex = 9;
+			this.btnRemoveInstall.Text = "Remove";
+			this.btnRemoveInstall.UseVisualStyleBackColor = true;
 			// 
 			// label4
 			// 
@@ -255,22 +205,23 @@
 			this.label5.TabIndex = 3;
 			this.label5.Text = "Local path";
 			// 
-			// textBox2
+			// txtLocalPath
 			// 
-			this.textBox2.Location = new System.Drawing.Point(806, 418);
-			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(234, 22);
-			this.textBox2.TabIndex = 11;
-			this.textBox2.Text = "C:\\IG";
+			this.txtLocalPath.Location = new System.Drawing.Point(806, 418);
+			this.txtLocalPath.Name = "txtLocalPath";
+			this.txtLocalPath.Size = new System.Drawing.Size(234, 22);
+			this.txtLocalPath.TabIndex = 11;
+			this.txtLocalPath.Text = "C:\\IG";
 			// 
-			// button12
+			// btnCheckout
 			// 
-			this.button12.Location = new System.Drawing.Point(806, 462);
-			this.button12.Name = "button12";
-			this.button12.Size = new System.Drawing.Size(205, 46);
-			this.button12.TabIndex = 8;
-			this.button12.Text = "Checkout/Update";
-			this.button12.UseVisualStyleBackColor = true;
+			this.btnCheckout.Enabled = false;
+			this.btnCheckout.Location = new System.Drawing.Point(806, 462);
+			this.btnCheckout.Name = "btnCheckout";
+			this.btnCheckout.Size = new System.Drawing.Size(205, 46);
+			this.btnCheckout.TabIndex = 8;
+			this.btnCheckout.Text = "Checkout/Update";
+			this.btnCheckout.UseVisualStyleBackColor = true;
 			// 
 			// lbExternals
 			// 
@@ -300,18 +251,9 @@
 			this.label6.TabIndex = 3;
 			this.label6.Text = "Shared Resources";
 			// 
-			// button14
-			// 
-			this.button14.Location = new System.Drawing.Point(1761, 262);
-			this.button14.Name = "button14";
-			this.button14.Size = new System.Drawing.Size(143, 68);
-			this.button14.TabIndex = 13;
-			this.button14.Text = "New Release";
-			this.button14.UseVisualStyleBackColor = true;
-			// 
 			// btnEditExternals
 			// 
-			this.btnEditExternals.Location = new System.Drawing.Point(203, 363);
+			this.btnEditExternals.Location = new System.Drawing.Point(230, 363);
 			this.btnEditExternals.Name = "btnEditExternals";
 			this.btnEditExternals.Size = new System.Drawing.Size(76, 40);
 			this.btnEditExternals.TabIndex = 14;
@@ -357,21 +299,17 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1924, 831);
+			this.ClientSize = new System.Drawing.Size(1230, 664);
 			this.Controls.Add(this.cmdBrowseRepo);
 			this.Controls.Add(this.btnEditExternals);
-			this.Controls.Add(this.button14);
-			this.Controls.Add(this.textBox2);
+			this.Controls.Add(this.txtLocalPath);
 			this.Controls.Add(this.txtRepoUrl);
-			this.Controls.Add(this.button7);
-			this.Controls.Add(this.button10);
+			this.Controls.Add(this.btnRemoveInstall);
 			this.Controls.Add(this.btnRelRemove);
 			this.Controls.Add(this.btnEditModule);
-			this.Controls.Add(this.button6);
-			this.Controls.Add(this.button8);
-			this.Controls.Add(this.button5);
-			this.Controls.Add(this.button12);
-			this.Controls.Add(this.button9);
+			this.Controls.Add(this.btnPinInstallToRelease);
+			this.Controls.Add(this.btnCheckout);
+			this.Controls.Add(this.btnAddInstall);
 			this.Controls.Add(this.btnScanRepo);
 			this.Controls.Add(this.btnNewRel);
 			this.Controls.Add(this.btnAddModule);
@@ -385,8 +323,6 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.lbExternals);
 			this.Controls.Add(this.lbModules);
-			this.Controls.Add(this.btnInst);
-			this.Controls.Add(this.btnRel);
 			this.Name = "FrmMain";
 			this.Text = "Deployer";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
@@ -398,9 +334,6 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Button btnRel;
-		private System.Windows.Forms.Button btnInst;
 		private System.Windows.Forms.ListBox lbModules;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
@@ -409,22 +342,18 @@
 		private System.Windows.Forms.ListBox lbInstalls;
 		private System.Windows.Forms.Button btnNewRel;
 		private System.Windows.Forms.Button btnRelRemove;
-		private System.Windows.Forms.Button button5;
-		private System.Windows.Forms.Button button6;
-		private System.Windows.Forms.Button button7;
-		private System.Windows.Forms.Button button8;
-		private System.Windows.Forms.Button button9;
-		private System.Windows.Forms.Button button10;
+		private System.Windows.Forms.Button btnPinInstallToRelease;
+		private System.Windows.Forms.Button btnAddInstall;
+		private System.Windows.Forms.Button btnRemoveInstall;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox txtRepoUrl;
 		private System.Windows.Forms.Button btnScanRepo;
 		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.TextBox textBox2;
-		private System.Windows.Forms.Button button12;
+		private System.Windows.Forms.TextBox txtLocalPath;
+		private System.Windows.Forms.Button btnCheckout;
 		private System.Windows.Forms.ListBox lbExternals;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.BindingSource bsModules;
-		private System.Windows.Forms.Button button14;
 		private System.Windows.Forms.Button btnEditExternals;
 		private System.Windows.Forms.Button btnEditModule;
 		private System.Windows.Forms.Button btnAddModule;

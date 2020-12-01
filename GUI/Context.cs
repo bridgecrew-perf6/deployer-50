@@ -11,8 +11,6 @@ namespace Deployer
 	public class Context : IDisposable
 	{
 		public DBase dBase = new DBase();
-		public FrmRel frmRel = new FrmRel();
-		public FrmInst frmInst = new FrmInst();
 
         /// <summary>
         /// All existing modules
@@ -70,10 +68,8 @@ namespace Deployer
 
         public void Dispose()
         {
-            frmRel.Dispose();
-            frmRel = null;
-            frmInst.Dispose();
-            frmInst = null;
+            //frmRel.Dispose();
+            //frmRel = null;
         }
 
         // singleton pattern
