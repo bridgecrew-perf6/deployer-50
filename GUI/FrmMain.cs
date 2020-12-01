@@ -19,7 +19,6 @@ namespace Deployer
 		{
 			InitializeComponent();
 			
-			ctx.ScanRepo();
 			
 			lbModules.DataSource = ctx.Modules;
 			lbReleases.DataSource = ctx.Releases;
@@ -42,6 +41,12 @@ namespace Deployer
 				ctx.ReloadExternals();
 			};
 
+		}
+
+		private void FrmMain_Load(object sender, EventArgs e)
+		{
+			txtRepoUrl.Text = ctx.dBase.RepoRootUrl;
+			ctx.ScanRepo();
 		}
 
 		public void ShowRel()
@@ -83,7 +88,6 @@ namespace Deployer
 			var res = f.ShowDialog();
 			if( res == DialogResult.OK )
 			{
-				string releaseBaseUrl = ctx.dBase.GetReleaseModuleUrl( ctx.Module ); 
 				string srcReleaseName = ctx.Release;
 				string destReleaseName = f.CompleteName;
 				if( ReleaseMaker.Copy(
@@ -135,6 +139,18 @@ namespace Deployer
 					ctx.ScanRepo();
 				}
 				return;
+			}
+		}
+
+		private void btnScanRepo_Click(object sender, EventArgs e)
+		{
+			string repoUrl = txtRepoUrl.Text.Trim();
+			if( !String.IsNullOrWhiteSpace( repoUrl ) )
+			{
+				if( ctx.dBase.InitFromUrl( repoUrl ) )
+				{
+					ctx.ScanRepo();
+				}
 			}
 		}
 	}

@@ -31,6 +31,7 @@ namespace Deployer
 			//	NLog.LogManager.ReconfigExistingLoggers();
 			//}
 
+
 			//Test1();
 			//Test2();
 			//Test3();
@@ -39,7 +40,23 @@ namespace Deployer
 			//Test6();
 			//Test7();
 			//Test8();
-			Test9();
+			//Test9();
+
+			var ctx = Context.Instance;
+			var cwd = System.IO.Directory.GetCurrentDirectory();
+			if( ctx.dBase.InitFromWCDir( cwd ) )
+			{
+				ctx.ScanRepo();
+			}
+			else
+			{
+				// try our testing "Data/repo" directory
+				var demoRepoUrl = "file:///" + cwd.Replace('\\', '/') + "/Data/repo";
+				if( ctx.dBase.InitFromUrl( demoRepoUrl ) )
+				{
+					ctx.ScanRepo();
+				}
+			}
 
 			Application.Run(new FrmMain());
 		}
@@ -155,9 +172,7 @@ namespace Deployer
 
 		static void Test9()
 		{
-			var client = new SvnClient();
 			var ctx = Context.Instance;
-			ctx.dBase.svnClient = new SvnClient();
 			var cwd = System.IO.Directory.GetCurrentDirectory().Replace('\\', '/');
 			ctx.dBase.RepoRootUrl = $"file:///{cwd}/Data/repo";
 			ctx.ScanRepo();

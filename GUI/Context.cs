@@ -105,12 +105,17 @@ namespace Deployer
 			return $"{releaseBaseUrl}/{relName}";
 		}
 
-        public void ScanRepo()
+        public bool ScanRepo()
         {
+            if( !dBase.IsRepoValid )
+                return false;
+
             ReloadModules();
             ReloadReleases();
             ReloadExternals();
             ReloadInstalls();
+
+            return true;
         }
 
         public void ReloadModules()

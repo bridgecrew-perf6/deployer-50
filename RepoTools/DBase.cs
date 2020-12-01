@@ -14,7 +14,7 @@ namespace Deployer.Repo
 	public class DBase
 	{
 		// http://svn.myserver.com/MyRepo/
-		public string RepoRootUrl = @"D:\Work\svn\my-test-sandbox";
+		public string RepoRootUrl = String.Empty;
 
 		string ShrSegm = "shared";
 		string RelSegm = "release";
@@ -27,6 +27,46 @@ namespace Deployer.Repo
 		public string GetInstallRootUrl() => $"{RepoRootUrl}/{InstSegm}";
 
 		public SvnClient svnClient = new SvnClient();
+
+		public bool IsRepoValid = false;
+		
+		public bool InitFromWCDir( string wcDir )
+		{
+			try
+			{
+				SvnInfoEventArgs info;
+				if( svnClient.GetInfo( new SvnPathTarget(wcDir), out info ) )
+				{
+					RepoRootUrl = info.RepositoryRoot.AbsoluteUri;
+					IsRepoValid = true;
+					return true;
+				}
+			}
+			catch( SvnException )
+			{
+			}
+			IsRepoValid = false;
+			return false;
+		}
+
+		public bool InitFromUrl( string repoUrl )
+		{
+			try
+			{
+				SvnInfoEventArgs info;
+				if( svnClient.GetInfo( new SvnUriTarget(repoUrl), out info ) )
+				{
+					RepoRootUrl = info.RepositoryRoot.AbsoluteUri;
+					IsRepoValid = true;
+					return true;
+				}
+			}
+			catch( SvnException )
+			{
+			}
+			IsRepoValid = false;
+			return false;
+		}
 
 	}
 }

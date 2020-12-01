@@ -37,8 +37,8 @@
 			this.lbReleases = new System.Windows.Forms.ListBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.lbInstalls = new System.Windows.Forms.ListBox();
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
+			this.btnAddModule = new System.Windows.Forms.Button();
+			this.btnEditModule = new System.Windows.Forms.Button();
 			this.btnNewRel = new System.Windows.Forms.Button();
 			this.btnRelRemove = new System.Windows.Forms.Button();
 			this.button5 = new System.Windows.Forms.Button();
@@ -48,8 +48,8 @@
 			this.button9 = new System.Windows.Forms.Button();
 			this.button10 = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.button11 = new System.Windows.Forms.Button();
+			this.txtRepoUrl = new System.Windows.Forms.TextBox();
+			this.btnScanRepo = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.button12 = new System.Windows.Forms.Button();
@@ -94,7 +94,7 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(21, 129);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(128, 25);
+			this.label1.Size = new System.Drawing.Size(90, 17);
 			this.label1.TabIndex = 3;
 			this.label1.Text = "App Modules";
 			// 
@@ -103,7 +103,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(308, 129);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(93, 25);
+			this.label2.Size = new System.Drawing.Size(67, 17);
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Releases";
 			// 
@@ -126,7 +126,7 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(853, 129);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(72, 25);
+			this.label3.Size = new System.Drawing.Size(51, 17);
 			this.label3.TabIndex = 7;
 			this.label3.Text = "Installs";
 			// 
@@ -135,30 +135,32 @@
 			this.lbInstalls.FormattingEnabled = true;
 			this.lbInstalls.ItemHeight = 24;
 			this.lbInstalls.Items.AddRange(new object[] {
-            "CZ/Brno/MainEnv",
-            "IL/Holon/BigIntegEnv1"});
+            "CZ/Prague/MainEnv",
+            "GE/Munich/BigIntegEnv1"});
 			this.lbInstalls.Location = new System.Drawing.Point(859, 158);
 			this.lbInstalls.Name = "lbInstalls";
 			this.lbInstalls.Size = new System.Drawing.Size(246, 172);
 			this.lbInstalls.TabIndex = 6;
 			// 
-			// button1
+			// btnAddModule
 			// 
-			this.button1.Location = new System.Drawing.Point(26, 344);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(89, 44);
-			this.button1.TabIndex = 8;
-			this.button1.Text = "Add";
-			this.button1.UseVisualStyleBackColor = true;
+			this.btnAddModule.Enabled = false;
+			this.btnAddModule.Location = new System.Drawing.Point(26, 344);
+			this.btnAddModule.Name = "btnAddModule";
+			this.btnAddModule.Size = new System.Drawing.Size(89, 44);
+			this.btnAddModule.TabIndex = 8;
+			this.btnAddModule.Text = "Add";
+			this.btnAddModule.UseVisualStyleBackColor = true;
 			// 
-			// button2
+			// btnEditModule
 			// 
-			this.button2.Location = new System.Drawing.Point(133, 344);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(95, 44);
-			this.button2.TabIndex = 9;
-			this.button2.Text = "Edit";
-			this.button2.UseVisualStyleBackColor = true;
+			this.btnEditModule.Enabled = false;
+			this.btnEditModule.Location = new System.Drawing.Point(133, 344);
+			this.btnEditModule.Name = "btnEditModule";
+			this.btnEditModule.Size = new System.Drawing.Size(95, 44);
+			this.btnEditModule.TabIndex = 9;
+			this.btnEditModule.Text = "Edit";
+			this.btnEditModule.UseVisualStyleBackColor = true;
 			// 
 			// btnNewRel
 			// 
@@ -240,33 +242,34 @@
 			this.label4.AutoSize = true;
 			this.label4.Location = new System.Drawing.Point(21, 28);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(58, 25);
+			this.label4.Size = new System.Drawing.Size(42, 17);
 			this.label4.TabIndex = 3;
 			this.label4.Text = "Repo";
 			// 
-			// textBox1
+			// txtRepoUrl
 			// 
-			this.textBox1.Location = new System.Drawing.Point(85, 28);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(440, 29);
-			this.textBox1.TabIndex = 11;
-			this.textBox1.Text = "http://svndist.server.com/projects/abcd";
+			this.txtRepoUrl.Location = new System.Drawing.Point(85, 28);
+			this.txtRepoUrl.Name = "txtRepoUrl";
+			this.txtRepoUrl.Size = new System.Drawing.Size(440, 22);
+			this.txtRepoUrl.TabIndex = 11;
+			this.txtRepoUrl.Text = "http://svndist.server.com/projects/abcd";
 			// 
-			// button11
+			// btnScanRepo
 			// 
-			this.button11.Location = new System.Drawing.Point(543, 28);
-			this.button11.Name = "button11";
-			this.button11.Size = new System.Drawing.Size(78, 46);
-			this.button11.TabIndex = 8;
-			this.button11.Text = "Scan";
-			this.button11.UseVisualStyleBackColor = true;
+			this.btnScanRepo.Location = new System.Drawing.Point(543, 28);
+			this.btnScanRepo.Name = "btnScanRepo";
+			this.btnScanRepo.Size = new System.Drawing.Size(78, 46);
+			this.btnScanRepo.TabIndex = 8;
+			this.btnScanRepo.Text = "Scan";
+			this.btnScanRepo.UseVisualStyleBackColor = true;
+			this.btnScanRepo.Click += new System.EventHandler(this.btnScanRepo_Click);
 			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(853, 431);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(102, 25);
+			this.label5.Size = new System.Drawing.Size(74, 17);
 			this.label5.TabIndex = 3;
 			this.label5.Text = "Local path";
 			// 
@@ -274,7 +277,7 @@
 			// 
 			this.textBox2.Location = new System.Drawing.Point(859, 459);
 			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(234, 29);
+			this.textBox2.Size = new System.Drawing.Size(234, 22);
 			this.textBox2.TabIndex = 11;
 			this.textBox2.Text = "C:\\IG";
 			// 
@@ -311,7 +314,7 @@
 			this.label6.AutoSize = true;
 			this.label6.Location = new System.Drawing.Point(21, 422);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(174, 25);
+			this.label6.Size = new System.Drawing.Size(126, 17);
 			this.label6.TabIndex = 3;
 			this.label6.Text = "Shared Resources";
 			// 
@@ -335,19 +338,19 @@
 			this.ClientSize = new System.Drawing.Size(1924, 831);
 			this.Controls.Add(this.button14);
 			this.Controls.Add(this.textBox2);
-			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.txtRepoUrl);
 			this.Controls.Add(this.button7);
 			this.Controls.Add(this.button10);
 			this.Controls.Add(this.btnRelRemove);
-			this.Controls.Add(this.button2);
+			this.Controls.Add(this.btnEditModule);
 			this.Controls.Add(this.button6);
 			this.Controls.Add(this.button8);
 			this.Controls.Add(this.button5);
 			this.Controls.Add(this.button12);
 			this.Controls.Add(this.button9);
-			this.Controls.Add(this.button11);
+			this.Controls.Add(this.btnScanRepo);
 			this.Controls.Add(this.btnNewRel);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.btnAddModule);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.lbInstalls);
 			this.Controls.Add(this.label2);
@@ -363,6 +366,7 @@
 			this.Name = "FrmMain";
 			this.Text = "Deployer";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
+			this.Load += new System.EventHandler(this.FrmMain_Load);
 			((System.ComponentModel.ISupportInitialize)(this.bsModules)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -379,8 +383,8 @@
 		private System.Windows.Forms.ListBox lbReleases;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ListBox lbInstalls;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button btnAddModule;
+		private System.Windows.Forms.Button btnEditModule;
 		private System.Windows.Forms.Button btnNewRel;
 		private System.Windows.Forms.Button btnRelRemove;
 		private System.Windows.Forms.Button button5;
@@ -390,8 +394,8 @@
 		private System.Windows.Forms.Button button9;
 		private System.Windows.Forms.Button button10;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Button button11;
+		private System.Windows.Forms.TextBox txtRepoUrl;
+		private System.Windows.Forms.Button btnScanRepo;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.TextBox textBox2;
 		private System.Windows.Forms.Button button12;
