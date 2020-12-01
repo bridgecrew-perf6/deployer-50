@@ -153,5 +153,20 @@ namespace Deployer
 				}
 			}
 		}
+
+		private void btnEditExternals_Click(object sender, EventArgs e)
+		{
+			// /command:properties /path:"file:///D:/Work/svn/xxx/repo/releases/IG/Head" /property:svn:externals	
+			string relUrl = ctx.GetReleaseUrl( ctx.Release );
+			string cmdLine = $"/command:properties /path:\"{relUrl}\" /property:svn:externals";
+			ctx.dBase.RunTortoiseProc( cmdLine );
+		}
+
+		private void cmdBrowseRepo_Click(object sender, EventArgs e)
+		{
+			string repoUrl = txtRepoUrl.Text;
+			string cmdLine = $"/command:repobrowser /path:\"{repoUrl}\"";
+			ctx.dBase.RunTortoiseProc( cmdLine );
+		}
 	}
 }

@@ -68,5 +68,16 @@ namespace Deployer.Repo
 			return false;
 		}
 
+		public bool RunTortoiseProc( string cmdLine )
+		{
+			System.Diagnostics.Process process = new System.Diagnostics.Process();
+			System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+			startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+			startInfo.FileName = "TortoiseProc.exe";
+			startInfo.Arguments = cmdLine;
+			process.StartInfo = startInfo;
+			return process.Start();
+		}
+
 	}
 }
