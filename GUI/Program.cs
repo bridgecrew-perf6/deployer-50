@@ -75,18 +75,6 @@ namespace Deployer
 
 		}
 
-		static void Test3()
-		{
-			var client = new SvnClient();
-			ExtDefList exList = new ExtDefList();
-			exList.Externals.Add( new ExtDef() { LocalPath="Config", Target="Base", BaseUrl="^/shared/IG/Config/Base/trunk2" } );
-			exList.Install(
-				client,
-				"file:///D:/Work/svn/BIST/repo/releases/IG/Head",
-				new ExtDef.InstCmd() { Mode=ExtDef.EInstallMode.Head }
-			);
-		}
-
 		static void Test4()
 		{
 			var client = new SvnClient();
@@ -104,7 +92,7 @@ namespace Deployer
 			{
 				List<string> modules;
 				var rootUrl = "file:///D:/Work/svn/BIST/repo/installs";
-				if( ModuleScanner.Scan( client, rootUrl, out modules ) )
+				if( RepoScanner.ScanModules( client, rootUrl, out modules ) )
 				{
 				}
 			}
@@ -112,26 +100,11 @@ namespace Deployer
 			{
 				List<string> installs;
 				var rootUrl = "file:///D:/Work/svn/BIST/repo/releases";
-				if( InstallScanner.Scan( client, rootUrl, out installs ) )
+				if( RepoScanner.ScanInstalls( client, rootUrl, out installs ) )
 				{
 				}
 			}
 			
-			{
-				List<string> templates;
-				var rootUrl = "file:///D:/Work/svn/BIST/repo/templates";
-				if( TemplateScanner.Scan( client, rootUrl, out templates ) )
-				{
-					foreach( var t in templates )
-					{
-						string templateUrl = $"{rootUrl}/{t}";
-						ExtDefList extDefs;
-						if( TemplateScanner.GetExtDefs( client, templateUrl, out extDefs ) )
-						{
-						} 
-					}
-				}
-			}
 		}
 		static void Test6()
 		{
@@ -177,7 +150,7 @@ namespace Deployer
 			var srcUrl = $"{baseUrl}/candidate/3.0.2";
 			var releaseName = "candidate/3.0.3";
 			var destUrl = $"{baseUrl}/{releaseName}";
-			var res = ReleaseMaker.Copy( client, srcUrl, destUrl, ReleaseMaker.EPinType.Tag, releaseName );
+			var res = ReleaseMaker.Copy( client, srcUrl, destUrl, Exter.EPinType.Tag, releaseName );
 		}
 
 		static void Test9()
@@ -197,7 +170,7 @@ namespace Deployer
 					ctx.dBase.svnClient, 
 					$"{releaseBaseUrl}/{srcReleaseName}",
 					$"{releaseBaseUrl}/{destReleaseName}",
-					ReleaseMaker.EPinType.Branch,
+					Exter.EPinType.Branch,
 					destReleaseName
 				);
 

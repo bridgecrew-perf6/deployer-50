@@ -15,15 +15,6 @@ namespace Deployer.Repo
 	{
 	    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-		public enum EPinType
-		{
-			Invalid,
-			Head, // following the head of the trunk
-			Peg, // pinned to peg revision of whatever
-			Branch, // branch using given releaseName
-			Tag // tag using given releaseName
-		}
-
 		/// <summary>
 		/// Creates a release by copying an existing one and changing the externals type
 		/// Only the root externals are changed. All in repository, no WC involved.
@@ -41,7 +32,7 @@ namespace Deployer.Repo
 		/// <param name="pinType">the resulting type of externals</param>
 		/// <param name="releaseName">name of the release Can contain sub-folders like 'sub1/sub2/version'</param>
 		/// <returns></returns>
-		public static bool Copy( SvnClient client, string srcUrl, string destUrl, EPinType pinType, string releaseName=null )
+		public static bool Copy( SvnClient client, string srcUrl, string destUrl, Exter.EPinType pinType, string releaseName=null )
 		{
 			/*
 			  - udělá svn copy (to zkopíruje externalsy jak jsou)
@@ -49,7 +40,7 @@ namespace Deployer.Repo
 			*/
 
 			// args check
-			if( pinType == EPinType.Branch || pinType == EPinType.Tag )
+			if( pinType == Exter.EPinType.Branch || pinType == Exter.EPinType.Tag )
 			{
 				if( String.IsNullOrEmpty( releaseName ) )
 				{
@@ -144,32 +135,32 @@ namespace Deployer.Repo
 
 		}
 
-		public static bool ModifyExternal( SvnClient client, ref SvnExternalItem ei, EPinType newType, string hostUrl, string releaseName=null )
+		static bool ModifyExternal( SvnClient client, ref SvnExternalItem ei, Exter.EPinType newType, string hostUrl, string releaseName=null )
 		{
 			switch( newType )
 			{
-				case EPinType.Head:
+				case Exter.EPinType.Head:
 				{
 					if( !MakeHead( client, ref ei, hostUrl ) )
 						return false;
 					break;
 				}
 
-				case EPinType.Peg:
+				case Exter.EPinType.Peg:
 				{
 					if( !MakePeg( client, ref ei, hostUrl ) )
 						return false;
 					break;
 				}
 
-				case EPinType.Branch:
+				case Exter.EPinType.Branch:
 				{
 					if( !MakeBranch( client, ref ei, hostUrl, releaseName ) )
 						return false;
 					break;
 				}
 
-				case EPinType.Tag:
+				case Exter.EPinType.Tag:
 				{
 					if( !MakeTag( client, ref ei, hostUrl, releaseName ) )
 						return false;
@@ -181,128 +172,28 @@ namespace Deployer.Repo
 		}
 
 		
-		public static bool GetExternalType( SvnExternalItem ei, out EPinType oldType )
+		static bool MakeHead( SvnClient client, ref SvnExternalItem ei, string hostUrl )
 		{
-			if( ei.Revision.RevisionType == SvnRevisionType.None )
-			{
-				oldType = EPinType.Head;
-				return true;
-			}
-
-			if( ei.Revision.RevisionType == SvnRevisionType.Number )
-			{
-				oldType = EPinType.Peg;
-				return true;
-			}
-
-			if( ei.Reference.Contains("/branches/") )
-			{
-				oldType = EPinType.Branch;
-				return true;
-			}
-
-			if( ei.Reference.Contains("/tags/") )
-			{
-				oldType = EPinType.Tag;
-				return true;
-			}
-
-			oldType = EPinType.Invalid;
-			Logger.Error($"Pin type of external ref '{ei}' can't be determmined");
-
-			return false;
-		}
-
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="client"></param>
-		/// <param name="ei"></param>
-		/// <param name="hostUrl">url of directory where the svn external is defined</param>
-		/// <returns></returns>
-		public static bool GetFullReferenceUrl( SvnClient client, SvnExternalItem ei, string hostUrl, out string result )
-		{
-			var url = ei.Reference;
-			result = url;
-			
-			if( url.StartsWith("^") )
-			{
-				var relativeUrl = url.Substring(1);
-
-				// get repo root
-				SvnInfoEventArgs info;
-				if( !client.GetInfo( new Uri(hostUrl), out info) )
-					return false;
-
-				result = CombineUrls( info.RepositoryRoot.AbsoluteUri, relativeUrl );
-				return true;
-			}
-			else
-			if( url.StartsWith("//") )
-			{
-				// FIXME: add support
-				Logger.Error($"Unsupported relative external '{url}'");
-				return false;
-			}
-			else
-			if( url.StartsWith("..") )
-			{
-				// FIXME: add support
-				Logger.Error($"Unsupported relative external '{url}'");
-				return false;
-			}
-			else
-			if( url.StartsWith("/") )
-			{
-				// FIXME: add support
-				Logger.Error($"Unsupported relative external '{url}'");
-				return false;
-			}
-			else
-			{
-				// leave the result same as url
-				return true;
-			}
-
-
-			//return false;
-		}
-
-		public static string CombineUrls(string url1, string url2 )
-		{
-			if( url1.EndsWith("/") && url2.StartsWith("/") )
-				return url1 + url2.Substring(1);
-			else if( !url1.EndsWith("/") && !url2.StartsWith("/") )
-				return url1 + "/" + url2.Substring(1);
-			else
-				return url1 + url2;
-		}
-
-
-
-		public static bool MakeHead( SvnClient client, ref SvnExternalItem ei, string hostUrl )
-		{
-			EPinType oldType;
-			if( !GetExternalType( ei, out oldType ) )
+			Exter.EPinType oldType;
+			if( !Exter.GetExternalType( ei, out oldType ) )
 				return false;
 
 			switch( oldType )
 			{
-				case EPinType.Head:
+				case Exter.EPinType.Head:
 				{
 					// no change needed, already a head external
 					return true;
 				}
 
-				case EPinType.Peg:
+				case Exter.EPinType.Peg:
 				{
 					// remove peg
 					ei = new SvnExternalItem( ei.Target, ei.Reference );
 					return true;
 				}
 
-				case EPinType.Branch:
+				case Exter.EPinType.Branch:
 				{
 					// replace the /branches/... part with /trunk
 					var orig = ei.Reference;
@@ -320,7 +211,7 @@ namespace Deployer.Repo
 					}
 				}
 
-				case EPinType.Tag:
+				case Exter.EPinType.Tag:
 				{
 					// replace the /tags/... part with /trunk
 					var orig = ei.Reference;
@@ -348,20 +239,20 @@ namespace Deployer.Repo
 			//return true;
 		}
 
-		public static bool MakePeg( SvnClient client, ref SvnExternalItem ei, string hostUrl )
+		static bool MakePeg( SvnClient client, ref SvnExternalItem ei, string hostUrl )
 		{
-			EPinType oldType;
-			if( !GetExternalType( ei, out oldType ) )
+			Exter.EPinType oldType;
+			if( !Exter.GetExternalType( ei, out oldType ) )
 				return false;
 
 			switch( oldType )
 			{
-				case EPinType.Head:
-				case EPinType.Branch:
+				case Exter.EPinType.Head:
+				case Exter.EPinType.Branch:
 				{
 					// resolve relative url references
 					string fullRefUrl;
-					if( !GetFullReferenceUrl( client, ei, hostUrl, out fullRefUrl ) )
+					if( !Exter.GetFullReferenceUrl( client, ei, hostUrl, out fullRefUrl ) )
 						return false;
 
 					// find the revision of the external
@@ -375,13 +266,13 @@ namespace Deployer.Repo
 					return true;
 				}
 
-				case EPinType.Peg:
+				case Exter.EPinType.Peg:
 				{
 					// no change needed, already a peg external
 					return true;
 				}
 
-				case EPinType.Tag:
+				case Exter.EPinType.Tag:
 				{
 					// no change needed, tag is considered unchangeable, keep it as it is
 					return true;
@@ -397,36 +288,36 @@ namespace Deployer.Repo
 			//return true;
 		}
 
-		public static bool MakeBranch( SvnClient client, ref SvnExternalItem ei, string hostUrl, string releaseName )
+		static bool MakeBranch( SvnClient client, ref SvnExternalItem ei, string hostUrl, string releaseName )
 		{
 			return MakeTagBranch( client, ref ei, hostUrl, releaseName, "branches" );
 		}
 
-		public static bool MakeTag( SvnClient client, ref SvnExternalItem ei, string hostUrl, string releaseName )
+		static bool MakeTag( SvnClient client, ref SvnExternalItem ei, string hostUrl, string releaseName )
 		{
 			return MakeTagBranch( client, ref ei, hostUrl, releaseName, "tags" );
 		}
 
-		public static bool MakeTagBranch( SvnClient client, ref SvnExternalItem ei, string hostUrl, string releaseName, string branchTagType )
+		static bool MakeTagBranch( SvnClient client, ref SvnExternalItem ei, string hostUrl, string releaseName, string branchTagType )
 		{
-			EPinType oldType;
-			if( !GetExternalType( ei, out oldType ) )
+			Exter.EPinType oldType;
+			if( !Exter.GetExternalType( ei, out oldType ) )
 				return false;
 
 			string fullRefUrl;
-			if( !GetFullReferenceUrl( client, ei, hostUrl, out fullRefUrl ) )
+			if( !Exter.GetFullReferenceUrl( client, ei, hostUrl, out fullRefUrl ) )
 				return false;
 
-			var origBaseUrl = StripStdSvnLayoutFromUrl( ei.Reference );
+			var origBaseUrl = Exter.StripStdSvnLayoutFromUrl( ei.Reference );
 			var origTaggizedUrl =  $"{origBaseUrl}/{branchTagType}/{releaseName}";
 
-			var fullBaseUrl = StripStdSvnLayoutFromUrl( fullRefUrl );
+			var fullBaseUrl = Exter.StripStdSvnLayoutFromUrl( fullRefUrl );
 			var fullTaggizedUrl =  $"{fullBaseUrl}/{branchTagType}/{releaseName}";
 
 			switch( oldType )
 			{
-				case EPinType.Head:
-				case EPinType.Branch:
+				case Exter.EPinType.Head:
+				case Exter.EPinType.Branch:
 				{
 					// create tag by svncopying from the head
 
@@ -449,7 +340,7 @@ namespace Deployer.Repo
 					return true;
 				}
 
-				case EPinType.Peg:
+				case Exter.EPinType.Peg:
 				{
 					// create tag by svncopying from given peg revision
 					try
@@ -471,7 +362,7 @@ namespace Deployer.Repo
 					return true;
 				}
 
-				case EPinType.Tag:
+				case Exter.EPinType.Tag:
 				{
 					// leave the tag as is
 					return false;
@@ -487,22 +378,6 @@ namespace Deployer.Repo
 			//return false;
 		}
 
-		// strips "/trunk" or "/braches/..." or "/tags/..." from the url
-		public static string StripStdSvnLayoutFromUrl( string url )
-		{
-			int pos;
-			pos = url.LastIndexOf("/trunk");
-			if( pos >= 0 )
-				return url.Substring( 0, pos );
-			pos = url.LastIndexOf("/branches/");
-			if( pos >= 0 )
-				return url.Substring( 0, pos );
-			pos = url.LastIndexOf("/tags/");
-			if( pos >= 0 )
-				return url.Substring( 0, pos );
-			return url;
-		}
-
 		public static bool Delete( SvnClient client, string srcUrl )
 		{
 			SvnDeleteArgs args = new SvnDeleteArgs();
@@ -510,27 +385,6 @@ namespace Deployer.Repo
 			return client.RemoteDelete( new Uri( srcUrl ), args );
 		}
 
-		public static bool GetExternals( SvnClient client, string releaseUrl, out SvnExternalItem[] extItems )
-		{
-			// read externals from the root directory and parse them
-			string externalsHostUrl = releaseUrl;
-
-            //SvnExternalItem[] extItems;
-			extItems = new SvnExternalItem[0];
-			{
-				string externalsPropVal;
-				if( !client.GetProperty( new SvnUriTarget( externalsHostUrl ), "svn:externals", out externalsPropVal ))
-					return false;
-
-				if( !String.IsNullOrEmpty( externalsPropVal ) )
-				{
-
-					if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
-						return false;
-				}
-			}
-			return true;
-		}
 	}
 
 

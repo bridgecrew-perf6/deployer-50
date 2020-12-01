@@ -12,19 +12,13 @@ using SharpSvn;
 namespace Deployer.Repo
 {
 	/// <summary>
-	/// Helper class to scan existing subpaths in the repository that end with a set of given "stoppers"
-	/// The stopper is NOT included
+	/// Helper class to scan existing subpaths in the repository
 	/// </summary>
 	public static class RepoScanner
 	{
-		// App modules are searched under the "releases" area, as part of the url ending with one of "Head", "Candidate", "Final"
-		//  releases/The/Module/Ends/Here/Head
-		//  releases/The/Module/Ends/Here/Candidate/2.0.1
-		//  releases/The/Module/Ends/Here/Final/2.0.1
-
 		/// <param name="url">must point to the "installs" area of the repository</param>
 		/// <returns>false on some error</returns>
-		public static bool ScanTillStopper( SvnClient client, string baseUrl, string[] stoppers, out List<string> subPaths )
+		static bool ScanTillStopper( SvnClient client, string baseUrl, string[] stoppers, out List<string> subPaths )
 		{
 			subPaths = new List<string>();	
 
@@ -35,7 +29,7 @@ namespace Deployer.Repo
 		}
 
 		// lists immediate children; checks if one of them is a stopper
-		public static bool CheckChildrenForStoppers( SvnClient client, Uri uri, string subPath, string[] stoppers, ref List<string> modules )
+		static bool CheckChildrenForStoppers( SvnClient client, Uri uri, string subPath, string[] stoppers, ref List<string> modules )
 		{
 			Collection<SvnListEventArgs> list;
 			SvnListArgs args = new SvnListArgs();
@@ -73,7 +67,7 @@ namespace Deployer.Repo
 			return true;
 		}
 
-		public static bool IsStopper( string name, string[] stoppers )
+		static bool IsStopper( string name, string[] stoppers )
 		{
 			foreach( var s in stoppers )
 			{
@@ -86,7 +80,7 @@ namespace Deployer.Repo
 		}
 
 
-		public static bool EndsWithStopper( string path, string[] stoppers )
+		static bool EndsWithStopper( string path, string[] stoppers )
 		{
 			// does it end with one of the stoppers?
 			int stopperFoundAt = -1;
@@ -119,7 +113,7 @@ namespace Deployer.Repo
 		/// The names returned contain all the levels
 		/// </summary>
 		/// <returns>true if succefull (results list filled)</returns>
-		public static bool ScanTillLeaf( SvnClient client, string baseUrl, int minDepth, out List<string> results )
+		static bool ScanTillLeaf( SvnClient client, string baseUrl, int minDepth, out List<string> results )
 		{
 			results = new List<string>();	
 
@@ -131,7 +125,7 @@ namespace Deployer.Repo
 
 		// lists immediate children;
 		// if no one found (leaf) and depth >= minLevel, add the path to the result
-		public static bool CheckChildrenLeaf( SvnClient client, Uri uri, string subPath, int depth, int minDepth, ref List<string> results )
+		static bool CheckChildrenLeaf( SvnClient client, Uri uri, string subPath, int depth, int minDepth, ref List<string> results )
 		{
 			Collection<SvnListEventArgs> list;
 			SvnListArgs args = new SvnListArgs();
@@ -172,6 +166,66 @@ namespace Deployer.Repo
 			
 			return true;
 		}
+
+
+		// Releases are searched under the "release" area, as part of the url ending with one of "Head", "Integration", "Candidate", "Final"
+		//  releases/The/Module/Ends/Here/Head
+		//  releases/The/Module/Ends/Here/Candidate/2.0.1
+		//  releases/The/Module/Ends/Here/Final/2.0.1
+		/// <param name="url">must point to the "releases" area of the repository</param>
+		/// <returns>false on some error</returns>
+		public static bool ScanReleases( SvnClient client, string url, out List<string> results )
+		{
+			return ScanTillLeaf( client, url, 2, out results );
+		}
+
+
+		public static string[] ModuleStoppers = new string[] { "head", "integration", "candidate", "final" };
+		
+		
+		/// <param name="url">must point to the "releases" area of the repository</param>
+		/// <returns>false on some error</returns>
+		public static bool ScanModules( SvnClient client, string url, out List<string> modules )
+		{
+			return ScanTillStopper( client, url, ModuleStoppers, out modules );
+		}
+
+		public static string[] StdLayoutStoppers = new string[] { "trunk", "branches", "tags" };
+
+		// Istallations are searched under the "installs" area, as part of the url ending with one of "Head", "Candidate", "Final"
+		//  install/The/Site/Name/Ends/Here/trunk
+		//  install/The/Site/Name/Ends/Here/branches
+		//  install/The/Site/Name/Ends/Here/tags
+		/// <param name="url">must point to the "install" area of the repository</param>
+		/// <returns>false on some error</returns>
+		public static bool ScanInstalls( SvnClient client, string url, out List<string> installs )
+		{
+			return ScanTillStopper( client, url, StdLayoutStoppers, out installs );
+		}
+
+
+		public static bool GetReleaseExternals( SvnClient client, string releaseUrl, out SvnExternalItem[] extItems )
+		{
+			// read externals from the root directory and parse them
+			string externalsHostUrl = releaseUrl;
+
+            //SvnExternalItem[] extItems;
+			extItems = new SvnExternalItem[0];
+			{
+				string externalsPropVal;
+				if( !client.GetProperty( new SvnUriTarget( externalsHostUrl ), "svn:externals", out externalsPropVal ))
+					return false;
+
+				if( !String.IsNullOrEmpty( externalsPropVal ) )
+				{
+
+					if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
+						return false;
+				}
+			}
+			return true;
+		}
+
 	}
 
 

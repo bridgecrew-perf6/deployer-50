@@ -118,7 +118,7 @@ namespace Deployer
             string prevModule = Module;
 
             List<string> modules;
-            ModuleScanner.Scan( dBase.svnClient, dBase.GetReleaseRootUrl(), out modules );
+            RepoScanner.ScanModules( dBase.svnClient, dBase.GetReleaseRootUrl(), out modules );
             Modules.Clear();        
             foreach( var i in modules ) Modules.Add(i);
 
@@ -144,7 +144,7 @@ namespace Deployer
             if( !String.IsNullOrEmpty( Module ) )
             {
                 List<string> releases;
-                ReleaseScanner.Scan(
+                RepoScanner.ScanReleases(
                     dBase.svnClient,
                     dBase.GetReleaseModuleUrl(Module),
                     out releases
@@ -176,7 +176,7 @@ namespace Deployer
         public void ReloadInstalls()
         {
             List<string> installs;
-            InstallScanner.Scan(
+            RepoScanner.ScanInstalls(
                 dBase.svnClient,
                 dBase.GetInstallRootUrl(),
                 out installs
@@ -192,7 +192,7 @@ namespace Deployer
             if( !String.IsNullOrEmpty( Release ) )
             {
                 SharpSvn.SvnExternalItem[] extItems;
-                ReleaseMaker.GetExternals(
+                RepoScanner.GetReleaseExternals(
                     dBase.svnClient, 
                     GetReleaseUrl( Release ),
                     out extItems

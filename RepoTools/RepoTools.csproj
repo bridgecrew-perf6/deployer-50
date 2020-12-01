@@ -60,20 +60,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DBase.cs" />
-    <Compile Include="DExt.cs" />
-    <Compile Include="DInst.cs" />
-    <Compile Include="DRel.cs" />
-    <Compile Include="DRepoScanner.cs" />
-    <Compile Include="DRepoSect.cs" />
-    <Compile Include="DScanInst.cs" />
-    <Compile Include="DRelMaker.cs" />
-    <Compile Include="DScanRelease.cs" />
-    <Compile Include="DScanModule.cs" />
-    <Compile Include="DScanTempl.cs" />
-    <Compile Include="DSectTempl.cs" />
-    <Compile Include="ExtDefList.cs" />
+    <Compile Include="Exter.cs" />
+    <Compile Include="RepoScanner.cs" />
+    <Compile Include="ReleaseMaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

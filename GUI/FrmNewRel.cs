@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Deployer.Repo;
 
 namespace Deployer
 {
@@ -30,13 +31,13 @@ namespace Deployer
 		/// <summary>
 		/// Pin-style of the externals to shared resources (output)
 		/// </summary>
-		public Repo.ReleaseMaker.EPinType PinType = Repo.ReleaseMaker.EPinType.Invalid;
+		public Exter.EPinType PinType = Exter.EPinType.Invalid;
 
 		public FrmNewRel()
 		{
 			InitializeComponent();
 
-			var releaseTypes = new List<string>( Repo.ModuleScanner.Stoppers );
+			var releaseTypes = new List<string>( RepoScanner.ModuleStoppers );
 			cbType.DataSource = releaseTypes;
 			cbType.SelectedValueChanged += (object sender, EventArgs e) => { UpdateResult(); };
 			txtName.TextChanged += (object sender, EventArgs e) => { UpdateResult(); };
@@ -60,16 +61,16 @@ namespace Deployer
 			txtComplateName.Text = CompleteName;
 		}
 
-		Repo.ReleaseMaker.EPinType ReleaseTypeToPinType( string relType )
+		Exter.EPinType ReleaseTypeToPinType( string relType )
 		{
 			switch( relType.ToLower() )
 			{
-				case "head": return Repo.ReleaseMaker.EPinType.Head;
-				case "integration": return Repo.ReleaseMaker.EPinType.Peg;
-				case "candidate": return Repo.ReleaseMaker.EPinType.Branch;
-				case "final": return Repo.ReleaseMaker.EPinType.Tag;
+				case "head": return Exter.EPinType.Head;
+				case "integration": return Exter.EPinType.Peg;
+				case "candidate": return Exter.EPinType.Branch;
+				case "final": return Exter.EPinType.Tag;
 			}
-			return Repo.ReleaseMaker.EPinType.Invalid;
+			return Exter.EPinType.Invalid;
 		}
 
 	}
