@@ -179,13 +179,13 @@
 			// 
 			// btnCheckout
 			// 
-			this.btnCheckout.Enabled = false;
 			this.btnCheckout.Location = new System.Drawing.Point(1050, 300);
 			this.btnCheckout.Name = "btnCheckout";
 			this.btnCheckout.Size = new System.Drawing.Size(141, 46);
 			this.btnCheckout.TabIndex = 8;
 			this.btnCheckout.Text = "Checkout";
 			this.btnCheckout.UseVisualStyleBackColor = true;
+			this.btnCheckout.Click += new System.EventHandler(this.btnCheckout_Click);
 			// 
 			// lbReleaseExternals
 			// 
@@ -276,7 +276,7 @@
 			// 
 			// btnEditInstallExternals
 			// 
-			this.btnEditInstallExternals.Location = new System.Drawing.Point(952, 363);
+			this.btnEditInstallExternals.Location = new System.Drawing.Point(1005, 363);
 			this.btnEditInstallExternals.Name = "btnEditInstallExternals";
 			this.btnEditInstallExternals.Size = new System.Drawing.Size(76, 40);
 			this.btnEditInstallExternals.TabIndex = 18;

@@ -17,7 +17,7 @@ namespace Deployer
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main()
+		static void Main(string[] args)
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -43,21 +43,32 @@ namespace Deployer
 			//Test9();
 
 			var ctx = Context.Instance;
-			var cwd = System.IO.Directory.GetCurrentDirectory();
-			if( ctx.dBase.InitFromWCDir( cwd ) )
+
+			// repo url from command line
+			if( args.Length > 0 )
 			{
-				ctx.ScanRepo();
+				if( ctx.dBase.InitFromUrl( args[0] ) )
+				{
+				}
 			}
 			else
 			{
-				// try our testing "Data/repo" directory
-				var demoRepoUrl = "file:///" + cwd.Replace('\\', '/') + "/Data/repo";
-				if( ctx.dBase.InitFromUrl( demoRepoUrl ) )
+				// repo url from current working directory's working copy 
+				var cwd = System.IO.Directory.GetCurrentDirectory();
+				if( ctx.dBase.InitFromWCDir( cwd ) )
 				{
-					ctx.ScanRepo();
+				}
+				else
+				{
+					// try our testing "Data/repo" directory
+					var demoRepoUrl = "file:///" + cwd.Replace('\\', '/') + "/Data/repo";
+					if( ctx.dBase.InitFromUrl( demoRepoUrl ) )
+					{
+					}
 				}
 			}
 
+			ctx.ScanRepo();
 			Application.Run(new FrmMain());
 		}
 

@@ -170,5 +170,12 @@ namespace Deployer
 			);
 			ctx.ReloadInstallExternals();
 		}
+
+		private void btnCheckout_Click(object sender, EventArgs e)
+		{
+			string installUrl = ctx.GetInstallUrl( ctx.Install );
+			string cmdLine = $"/command:checkout /url:\"{installUrl}\"";
+			ctx.dBase.RunTortoiseProc( cmdLine );
+		}
 	}
 }

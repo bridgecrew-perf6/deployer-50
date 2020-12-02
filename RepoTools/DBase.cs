@@ -76,6 +76,9 @@ namespace Deployer.Repo
 			catch( SvnException )
 			{
 			}
+			catch( System.UriFormatException )
+			{
+			}
 			IsRepoValid = false;
 			return false;
 		}
