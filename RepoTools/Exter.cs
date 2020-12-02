@@ -112,6 +112,20 @@ namespace Deployer.Repo
 			//return false;
 		}
 
+		public static string TryMakeRelativeReference( string absUrl, string repoRootUrl )
+		{
+			if( !repoRootUrl.EndsWith("/") )
+				repoRootUrl+="/";
+
+			if( absUrl.StartsWith( repoRootUrl ) )
+			{
+				var relativePart = absUrl.Substring( repoRootUrl.Length );
+				return $"^/{relativePart}";
+			}
+			return absUrl;
+		}
+
+
 		public static string CombineUrls(string url1, string url2 )
 		{
 			if( url1.EndsWith("/") && url2.StartsWith("/") )
@@ -140,6 +154,45 @@ namespace Deployer.Repo
 			return url;
 		}
 
+		public static bool ReadExternals( SvnClient client, string externalsHostUrl, out SvnExternalItem[] extItems )
+		{
+            //SvnExternalItem[] extItems;
+			extItems = new SvnExternalItem[0];
+			{
+				string externalsPropVal;
+				if( !client.GetProperty( new SvnUriTarget( externalsHostUrl ), "svn:externals", out externalsPropVal ))
+					return false;
+
+				if( !String.IsNullOrEmpty( externalsPropVal ) )
+				{
+
+					if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
+						return false;
+				}
+			}
+			return true;
+		}
+
+		public static bool WriteExternals( SvnClient client, string externalsHostUrl, SvnExternalItem[] extItems, long revision )
+		{
+			// reassemble value from parsed items
+			var sb = new StringBuilder();
+			foreach( var ei in extItems )
+			{
+				ei.WriteTo( sb, false );
+				sb.Append("\r\n");
+			}
+			var externalsPropValue = sb.ToString();
+
+			//  - set svn:external property back to given url + ext.LocalPath
+			var args = new SvnSetPropertyArgs();
+			args.BaseRevision = revision;
+			args.LogMessage = "";
+			if( !client.RemoteSetProperty( new Uri(externalsHostUrl), "svn:externals", externalsPropValue, args ) )
+				return false;
+
+			return true;
+		}
 	}
 
 

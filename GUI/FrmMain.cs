@@ -23,7 +23,8 @@ namespace Deployer
 			lbModules.DataSource = ctx.Modules;
 			lbReleases.DataSource = ctx.Releases;
 			lbInstalls.DataSource = ctx.Installs;
-			lbExternals.DataSource = ctx.Externals;
+			lbReleaseExternals.DataSource = ctx.ReleaseExternals;
+			lbInstallExternals.DataSource = ctx.InstallExternals;
 
 			// releases are shown for currently selected module
 			lbModules.SelectedIndexChanged += (object sender, System.EventArgs e) =>
@@ -31,14 +32,21 @@ namespace Deployer
 				int index = lbModules.SelectedIndex;
 				ctx.ModuleIndex = index;
 				ctx.ReloadReleases();
-				ctx.ReloadExternals();
+				ctx.ReloadReleaseExternals();
 			};
 
 			lbReleases.SelectedIndexChanged += (object sender, System.EventArgs e) =>
 			{
 				int index = lbReleases.SelectedIndex;
 				ctx.ReleaseIndex = index;
-				ctx.ReloadExternals();
+				ctx.ReloadReleaseExternals();
+			};
+
+			lbInstalls.SelectedIndexChanged += (object sender, System.EventArgs e) =>
+			{
+				int index = lbInstalls.SelectedIndex;
+				ctx.InstallIndex = index;
+				ctx.ReloadInstallExternals();
 			};
 
 		}
@@ -53,11 +61,6 @@ namespace Deployer
 		private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			ctx.Dispose();
-		}
-
-		private void button8_Click(object sender, EventArgs e)
-		{
-
 		}
 
 
@@ -135,11 +138,11 @@ namespace Deployer
 			}
 		}
 
-		private void btnEditExternals_Click(object sender, EventArgs e)
+		private void btnEditReleaseExternals_Click(object sender, EventArgs e)
 		{
 			// /command:properties /path:"file:///D:/Work/svn/xxx/repo/releases/IG/Head" /property:svn:externals	
-			string relUrl = ctx.GetReleaseUrl( ctx.Release );
-			string cmdLine = $"/command:properties /path:\"{relUrl}\" /property:svn:externals";
+			string url = ctx.GetReleaseUrl( ctx.Release );
+			string cmdLine = $"/command:properties /path:\"{url}\" /property:svn:externals";
 			ctx.dBase.RunTortoiseProc( cmdLine );
 		}
 
@@ -148,6 +151,24 @@ namespace Deployer
 			string repoUrl = txtRepoUrl.Text;
 			string cmdLine = $"/command:repobrowser /path:\"{repoUrl}\"";
 			ctx.dBase.RunTortoiseProc( cmdLine );
+		}
+
+		private void btnEditInstallExternals_Click(object sender, EventArgs e)
+		{
+			string url = ctx.GetInstallUrl( ctx.Install );
+			string cmdLine = $"/command:properties /path:\"{url}\" /property:svn:externals";
+			ctx.dBase.RunTortoiseProc( cmdLine );
+		}
+
+		private void btnPinInstallToRelease_Click(object sender, EventArgs e)
+		{
+			InstallMaker.LinkModule(
+				ctx.dBase.svnClient, 
+				ctx.GetInstallUrl( ctx.Install ),
+				ctx.Module,
+				ctx.GetReleaseUrl( ctx.Release )
+			);
+			ctx.ReloadInstallExternals();
 		}
 	}
 }

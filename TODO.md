@@ -10,7 +10,7 @@ V repozitáři se zkontroluje vnitřní struktura
  * shared
  * release
  * install
- 
+
 Neexistuje-li, nabídneme vytvoření.
  * Přímo do repo vytvoříme vnitřní strukturu (jen ty části, které chybí, bez modulů...)
 
@@ -31,7 +31,7 @@ New App Module
  * Vybereme template z konfigurační složky Templates
  * Založíme repo podadresář pod shared, release, install
  * Vytvoříme Head release 
- 
+
 New Head release
  * Založíme podadresář release/<module>/head
  * Vložíme do něj počáteční strukturu adresářů/souborů dle konfigurace
@@ -44,7 +44,7 @@ New Head release
  * Zopakujeme sken, aktualizujeme UI
 
 
-   
+
 Nepotřebujeme templaty, Head release poslouží jako template (externalsy jsou v něm napojené na HEAD trunku).
 Z Headu vytváříme Candidate prostou svn kopií se zapnutím pinováním.
 
@@ -126,7 +126,7 @@ Změny z kandidátního branche zpět do trunku předávat pomocí merge
 Při "Make Candidate" bychom si mohli vybrat, jakého typu ten kandidát bude - zda peg pnned, nebo branched...
   "Make candidate (pinned to trunk)" - commits affect trunk directly (unsafe, use witch caution!)
   "Make candidate (branch)" - commits do not affect trunk, safe, changes can be merged to trunk
-  
+
 Tag argument ReleaseMakeru 
 
 
@@ -154,7 +154,7 @@ Varianty releasů
 	   - nebo trunk-peg ale WC se při první změně updatne na head
 	      - pozor zde při svn update hrozí návrat ke staré peg verzi
 		  - po každém commitu vyžaduje změnu pegu v externalsu
- 
+
   - Kandidát (testovací)
 	- Vyžaduje se jednoduchost (nemění se nečekaně pod rukama při svn update) a bezpečnost užívání (zabraňuje přímé změně trunku)
     - Commity lokálních změn jen vyjímečně
@@ -181,9 +181,9 @@ Vytváření releasů
   - Head => Final
      - U všech sdílených zdrojů vytvoří tag se jménem releasu (tags/final/2.0.1) z HEAD trunku (trunk@HEAD)
 	 - Nalinkuje na tento tag
-  
 
- 
+
+
 Operace nad sdílenými zdroji
   - vytvoř branch z aktuálního stavu trunku@HEAD
   - vytvoř branch z aktuálního stavu pegovaného trunk@254
@@ -191,17 +191,18 @@ Operace nad sdílenými zdroji
   - vytvoř tag z aktuálního stavu pegovaného trunk@254
   - vytvoř tag z aktuálního stavu branch@HEAD
     
+
 Operace nad externalsama
   - trunk@HEAD => trunk@254
   - trunk@254 => branches/candidate/2.0.1
   - branches/candidate/2.0.1 => tags/final/2.0.1
-  
+
 
 
 Kopírování releasu vyžaduje
   - srcUrl
   - destUrl
-  
+
 Operace nad sdíleným zdrojem vyžaduje
   - původní external
   - co z něj udělat
@@ -218,7 +219,7 @@ V současném stavu použijeme existující branch/tag sdíleného zdroje.
   - To je OK jen pokud se záměrně vracíme ke starému releasu.
   - Není OK pokud jsme chtěli úplně nový (chybně zadané kolizní jméno)
   - Není OK pokud jsme chtěli předefinovat starý release
-  
+
 Potřebujeme předem prověřit, zda některý z branchů/tagů již existuje, a nechat uživatele rozhodnout.
 Tedy nejprve provést něco jako "dry run" nebo "check" aniž bychom něco měnili, jenom při tom zkontrolujeme, zda cíle už náhodnou neexistují.
 Má smysl hlavně u Branch/Tag požadavků, u jiných nedochází k vytváření ničeho nového.
@@ -231,5 +232,19 @@ Dry run tedy namísto SVN copy provede SVN info na destUrl a pokud to již exist
 Uživateli zobrazíme varovný dialog, že už něco z toho existuje.
 Pokud zvolí "force", při svncopy nejprve ověříme, zda cíl již existuje, a případně jej prvně smažeme.
 => Copy metoda potřebuje příznak "force"
+
+# Linkování Installs na releasy
+
+Extrahovat externalsy z aktuálního installs a zobrazit dole.
+
+Čudlík co do instalace nalinkuje aktuálně zvolený release aktuálního modulu
+
+* Sestaví externals:
+  * Target: <module>
+  * Link:  ^/<release>
+* Přepíše existující (stejný Target).
+* Pokud Target neexistuje, nedovolí nalinkovat (komponenta se musí přidat ručně - automaticky by to bylo příliš nebezpečné).
+* Pokud Target již existuje a je jiný, varuje že se přelinkovává na jinou verzi.
+
 
 

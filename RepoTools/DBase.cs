@@ -14,17 +14,29 @@ namespace Deployer.Repo
 	public class DBase
 	{
 		// http://svn.myserver.com/MyRepo/
-		public string RepoRootUrl = String.Empty;
+		string _repoRootUrl = String.Empty;
+		public string RepoRootUrl
+		{
+			get { return _repoRootUrl; }
+			set {
+				if( String.IsNullOrEmpty(value ) )
+					_repoRootUrl = String.Empty;
+				else					
+				if( !value.EndsWith("/") )
+					_repoRootUrl = value + "/";
+				else
+					_repoRootUrl = value;
+			}
+		}
 
-		string ShrSegm = "shared";
-		string RelSegm = "release";
-		string InstSegm = "install";
+		public readonly string ShrSegm = "shared";
+		public readonly string RelSegm = "release";
+		public readonly string InstSegm = "install";
 
-		public string GetSharedRootUrl(string ModuleName) => $"{RepoRootUrl}/{ShrSegm}/{ModuleName}";
-		public string GetReleaseRootUrl() => $"{RepoRootUrl}/{RelSegm}";
-		public string GetReleaseModuleUrl(string ModuleName) => $"{RepoRootUrl}/{RelSegm}/{ModuleName}";
-		//public string GetInstRootUrl(string instSubPath, string ModuleName) => $"{RepoRootUrl}/{InstSegm}/{instSubPath}/{ModuleName}";
-		public string GetInstallRootUrl() => $"{RepoRootUrl}/{InstSegm}";
+		public string GetSharedRootUrl(string ModuleName) => $"{RepoRootUrl}{ShrSegm}/{ModuleName}";
+		public string GetReleaseRootUrl() => $"{RepoRootUrl}{RelSegm}";
+		public string GetReleaseModuleUrl(string ModuleName) => $"{RepoRootUrl}{RelSegm}/{ModuleName}";
+		public string GetInstallRootUrl() => $"{RepoRootUrl}{InstSegm}";
 
 		public SvnClient svnClient = new SvnClient();
 

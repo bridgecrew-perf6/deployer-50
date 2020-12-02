@@ -52,23 +52,8 @@ namespace Deployer.Repo
 			string externalsHostUrl = srcUrl;
 
             SvnExternalItem[] extItems;
-			{
-				string externalsPropVal;
-				if( !client.GetProperty( new SvnUriTarget( externalsHostUrl ), "svn:externals", out externalsPropVal ))
-					return false;
-
-				if( !String.IsNullOrEmpty( externalsPropVal ) )
-				{
-
-					if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
-						return false;
-				}
-				else
-				{
-					// empty array
-					extItems = new SvnExternalItem[0];
-				}
-			}
+			if( !Exter.ReadExternals( client, externalsHostUrl, out extItems ) )
+				return false;
 
 			// modify each of them (will create new tags if needed on referenced shared resources!)
 			{
@@ -112,24 +97,8 @@ namespace Deployer.Repo
 
 
 			// update its root externals
-			if( extItems.Length > 0 )
-			{
-				// reassemble value from parsed items
-				var sb = new StringBuilder();
-				foreach( var ei in extItems )
-				{
-					ei.WriteTo( sb, false );
-					sb.Append("\r\n");
-				}
-				var externalsPropValue = sb.ToString();
-
-				//  - set svn:external property back to given url + ext.LocalPath
-				var args = new SvnSetPropertyArgs();
-				args.BaseRevision = dstRevision;
-				args.LogMessage = "";
-				if( !client.RemoteSetProperty( new Uri(destUrl), "svn:externals", externalsPropValue, args ) )
-					return false;
-			}
+			if( !Exter.WriteExternals( client, destUrl, extItems, dstRevision ) )
+				return false;
 
 			return true;
 

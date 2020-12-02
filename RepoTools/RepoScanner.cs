@@ -32,11 +32,19 @@ namespace Deployer.Repo
 		static bool CheckChildrenForStoppers( SvnClient client, Uri uri, string subPath, string[] stoppers, ref List<string> modules )
 		{
 			Collection<SvnListEventArgs> list;
-			SvnListArgs args = new SvnListArgs();
-			args.Depth = SvnDepth.Children;
-			args.IncludeExternals = false;
-			if( !client.GetList( new SvnUriTarget( uri ), args, out list ) )
+			try
+			{
+				SvnListArgs args = new SvnListArgs();
+				args.Depth = SvnDepth.Children;
+				args.IncludeExternals = false;
+				if( !client.GetList( new SvnUriTarget( uri ), args, out list ) )
+					return false;
+			}
+			catch( SvnException )
+			{
 				return false;
+			}
+
 
 			bool first = true;
 			foreach( var li in list )
@@ -203,28 +211,6 @@ namespace Deployer.Repo
 			return ScanTillStopper( client, url, StdLayoutStoppers, out installs );
 		}
 
-
-		public static bool GetReleaseExternals( SvnClient client, string releaseUrl, out SvnExternalItem[] extItems )
-		{
-			// read externals from the root directory and parse them
-			string externalsHostUrl = releaseUrl;
-
-            //SvnExternalItem[] extItems;
-			extItems = new SvnExternalItem[0];
-			{
-				string externalsPropVal;
-				if( !client.GetProperty( new SvnUriTarget( externalsHostUrl ), "svn:externals", out externalsPropVal ))
-					return false;
-
-				if( !String.IsNullOrEmpty( externalsPropVal ) )
-				{
-
-					if( !SvnExternalItem.TryParse( externalsPropVal, out extItems) )
-						return false;
-				}
-			}
-			return true;
-		}
 
 	}
 

@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="DBase.cs" />
     <Compile Include="Exter.cs" />
+    <Compile Include="InstallMaker.cs" />
     <Compile Include="RepoScanner.cs" />
     <Compile Include="ReleaseMaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

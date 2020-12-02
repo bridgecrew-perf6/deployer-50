@@ -25,7 +25,7 @@ namespace Deployer
         /// <summary>
         /// Externals for current release of current module
         /// </summary>
-        public BindingList<string> Externals = new BindingList<string>();
+        public BindingList<string> ReleaseExternals = new BindingList<string>();
 
 
         public int ModuleIndex;
@@ -64,7 +64,36 @@ namespace Deployer
             }
         }
 
+        /// <summary>
+        /// Install site list
+        /// </summary>
         public BindingList<string> Installs = new BindingList<string>();
+
+
+        public int InstallIndex;
+
+        /// <summary>
+        /// Currently selected Install
+        /// </summary>
+        public string Install
+        {
+            get{
+                if( InstallIndex < 0 || InstallIndex >= Installs.Count )
+                    return String.Empty;
+                return Installs[InstallIndex];
+            }
+            set{
+
+                InstallIndex = Installs.IndexOf( value );
+            }
+        }
+
+
+        /// <summary>
+        /// Externals for current install
+        /// </summary>
+        public BindingList<string> InstallExternals = new BindingList<string>();
+
 
         public void Dispose()
         {
@@ -101,6 +130,16 @@ namespace Deployer
 			return $"{releaseBaseUrl}/{relName}";
 		}
 
+        /// <summary>
+        /// url of given Install
+        /// </summary>
+		public string GetInstallUrl( string installName )
+		{
+			string installBaseUrl = dBase.GetInstallRootUrl(); 
+			return $"{installBaseUrl}/{installName}/trunk";
+		}
+
+
         public bool ScanRepo()
         {
             if( !dBase.IsRepoValid )
@@ -108,8 +147,9 @@ namespace Deployer
 
             ReloadModules();
             ReloadReleases();
-            ReloadExternals();
+            ReloadReleaseExternals();
             ReloadInstalls();
+            ReloadInstallExternals();
 
             return true;
         }
@@ -123,7 +163,7 @@ namespace Deployer
             Modules.Clear();        
             foreach( var i in modules ) Modules.Add(i);
 
-            // if current module still exists, reload its releases
+            // if current module still exists, pick it
             if( !String.IsNullOrEmpty( prevModule ) && Modules.Contains( prevModule ) )
             {
                 ModuleIndex = Modules.IndexOf( prevModule );
@@ -176,6 +216,8 @@ namespace Deployer
 
         public void ReloadInstalls()
         {
+            string prevInstall = Install;
+
             List<string> installs;
             RepoScanner.ScanInstalls(
                 dBase.svnClient,
@@ -185,15 +227,29 @@ namespace Deployer
 
             Installs.Clear();
             foreach( var i in installs ) Installs.Add(i);
+
+            // if current module still exists, pick it
+            if( !String.IsNullOrEmpty( prevInstall ) && Installs.Contains( prevInstall ) )
+            {
+                InstallIndex = Installs.IndexOf( prevInstall );
+            }
+            else if( Installs.Count > 0 )
+            {
+                InstallIndex = 0;    
+            }
+            else
+            {
+                InstallIndex = -1;
+            }
         }
 
-        public void ReloadExternals()
+        public void ReloadReleaseExternals()
         {
-            Externals.Clear();
+            ReleaseExternals.Clear();
             if( !String.IsNullOrEmpty( Release ) )
             {
                 SharpSvn.SvnExternalItem[] extItems;
-                RepoScanner.GetReleaseExternals(
+                Exter.ReadExternals(
                     dBase.svnClient, 
                     GetReleaseUrl( Release ),
                     out extItems
@@ -201,21 +257,71 @@ namespace Deployer
 
                 foreach( var i in extItems )
                 {
+                    var r = i.Reference;
+                    
+                    // strip obvious beginning of the reference
+                    var removableStart = $"^/{dBase.ShrSegm}/{Module}/{i.Target}/";
+                    if( r.StartsWith( removableStart ) )
+                    {
+                        r = r.Substring( removableStart.Length );
+                    }
+
+                    
                     var s = "";
                     if( i.Revision.RevisionType == SharpSvn.SvnRevisionType.Number )
                     {
-                        s = $"{i.Target} => {i.Reference}@{i.Revision.Revision}";
+                        s = $"{i.Target} => {r}@{i.Revision.Revision}";
                     }
                     else
                     {
-                        s = $"{i.Target} => {i.Reference}";
+                        s = $"{i.Target} => {r}";
                     }
 
-                    Externals.Add( s );
+                    ReleaseExternals.Add( s );
                 }
             }
 
         }
+
+
+		public void ReloadInstallExternals()
+		{
+			InstallExternals.Clear();
+			if (!String.IsNullOrEmpty(Release))
+			{
+				SharpSvn.SvnExternalItem[] extItems;
+				Exter.ReadExternals(
+					dBase.svnClient,
+					GetInstallUrl(Install),
+					out extItems
+				);
+
+				foreach (var i in extItems)
+				{
+                    var r = i.Reference;
+                    
+                    // strip obvious beginning of the reference
+                    var removableStart = $"^/{dBase.RelSegm}/{i.Target}/";
+                    if( r.StartsWith( removableStart ) )
+                    {
+                        r = r.Substring( removableStart.Length );
+                    }
+
+                    var s = "";
+                    if( i.Revision.RevisionType == SharpSvn.SvnRevisionType.Number )
+                    {
+                        s = $"{i.Target} => {r}@{i.Revision.Revision}";
+                    }
+                    else
+                    {
+                        s = $"{i.Target} => {r}";
+                    }
+
+					InstallExternals.Add(s);
+				}
+			}
+
+		}
 
 
 

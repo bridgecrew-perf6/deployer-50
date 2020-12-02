@@ -58,20 +58,17 @@ mkdir release\UI\integration
 mkdir install
 mkdir install\CZ
 mkdir install\CZ\Brno
-mkdir install\CZ\Brno\Evn1
-mkdir install\CZ\Brno\Evn1\trunk
-mkdir install\CZ\Brno\Evn1\trunk\IG
-mkdir install\CZ\Brno\Evn1\trunk\IG\Bin
-mkdir install\CZ\Brno\Evn1\trunk\IG\Config
-mkdir install\CZ\Brno\Evn1\trunk\IG\Data
-mkdir install\CZ\Brno\Evn1\trunk\Spec
-mkdir install\CZ\Brno\Evn1\trunk\Spec\IG
-echo --- > install\CZ\Brno\Evn1\trunk\Spec\IG\custom.lua
+mkdir install\CZ\Brno\DemoRoom
+mkdir install\CZ\Brno\DemoRoom\trunk
+mkdir install\CZ\Brno\DemoRoom\trunk\Spec
+mkdir install\CZ\Brno\DemoRoom\trunk\Spec\IG
+echo --- > install\CZ\Brno\DemoRoom\trunk\Spec\IG\custom.lua
 
 
 svn add *
 svn propset svn:externals -F ..\externals-IG-head.txt release/IG/head/Master
 svn propset svn:externals -F ..\externals-UI-head.txt release/UI/head/Master
+svn propset svn:externals -F ..\externals-Install.txt install/CZ/Brno/DemoRoom/trunk
 svn commit -m "initial"
 
 popd
