@@ -69,7 +69,10 @@ namespace Deployer
 			}
 
 			ctx.ScanRepo();
+
 			Application.Run(new FrmMain());
+		
+			ctx.Dispose();
 		}
 
 		//static void Test1()

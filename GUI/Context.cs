@@ -154,9 +154,10 @@ namespace Deployer
             return true;
         }
 
-        public void ReloadModules()
+        public void ReloadModules( string valueToSelect=null )
         {
-            string prevModule = Module;
+            if( String.IsNullOrEmpty(valueToSelect) )
+                valueToSelect = Module;
 
             List<string> modules;
             RepoScanner.ScanModules( dBase.svnClient, dBase.GetReleaseRootUrl(), out modules );
@@ -164,9 +165,9 @@ namespace Deployer
             foreach( var i in modules ) Modules.Add(i);
 
             // if current module still exists, pick it
-            if( !String.IsNullOrEmpty( prevModule ) && Modules.Contains( prevModule ) )
+            if( !String.IsNullOrEmpty( valueToSelect ) && Modules.Contains( valueToSelect ) )
             {
-                ModuleIndex = Modules.IndexOf( prevModule );
+                ModuleIndex = Modules.IndexOf( valueToSelect );
             }
             else if( Modules.Count > 0 )
             {
@@ -178,9 +179,10 @@ namespace Deployer
             }
         }
 
-        public void ReloadReleases()
+        public void ReloadReleases( string valueToSelect=null )
         {
-            string prevRelease = Release;
+            if( String.IsNullOrEmpty(valueToSelect) )
+                valueToSelect = Release;
 
             if( !String.IsNullOrEmpty( Module ) )
             {
@@ -200,9 +202,9 @@ namespace Deployer
 
 
             // if current release still exist in the list, reload its releases
-            if( !String.IsNullOrEmpty( prevRelease ) && Releases.Contains( prevRelease ) )
+            if( !String.IsNullOrEmpty( valueToSelect ) && Releases.Contains( valueToSelect ) )
             {
-                ReleaseIndex = Releases.IndexOf( prevRelease );
+                ReleaseIndex = Releases.IndexOf( valueToSelect );
             }
             else if( Releases.Count > 0 )
             {
@@ -214,9 +216,11 @@ namespace Deployer
             }
         }
 
-        public void ReloadInstalls()
+        public void ReloadInstalls( string valueToSelect=null )
         {
-            string prevInstall = Install;
+            if( String.IsNullOrEmpty(valueToSelect) )
+                valueToSelect = Install;
+
 
             List<string> installs;
             RepoScanner.ScanInstalls(
@@ -229,9 +233,9 @@ namespace Deployer
             foreach( var i in installs ) Installs.Add(i);
 
             // if current module still exists, pick it
-            if( !String.IsNullOrEmpty( prevInstall ) && Installs.Contains( prevInstall ) )
+            if( !String.IsNullOrEmpty( valueToSelect ) && Installs.Contains( valueToSelect ) )
             {
-                InstallIndex = Installs.IndexOf( prevInstall );
+                InstallIndex = Installs.IndexOf( valueToSelect );
             }
             else if( Installs.Count > 0 )
             {

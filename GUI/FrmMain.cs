@@ -55,12 +55,19 @@ namespace Deployer
 		{
 			txtRepoUrl.Text = ctx.dBase.RepoRootUrl;
 			ctx.ScanRepo();
+			UpdateControls();
 		}
 
 
 		private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			ctx.Dispose();
+		}
+
+		private void UpdateControls()
+		{
+			lbModules.SelectedIndex = ctx.ModuleIndex;
+			lbReleases.SelectedIndex = ctx.ReleaseIndex;
+			lbInstalls.SelectedIndex = ctx.InstallIndex;
 		}
 
 
@@ -82,7 +89,8 @@ namespace Deployer
 					destReleaseName
 				) )
 				{
-					ctx.ScanRepo();
+					ctx.ReloadReleases( destReleaseName );	// select the newly created one
+					UpdateControls();
 				}
 			}
 		}
@@ -121,6 +129,7 @@ namespace Deployer
 				) )
 				{
 					ctx.ScanRepo();
+					UpdateControls();
 				}
 				return;
 			}
@@ -134,6 +143,7 @@ namespace Deployer
 				if( ctx.dBase.InitFromUrl( repoUrl ) )
 				{
 					ctx.ScanRepo();
+					UpdateControls();
 				}
 			}
 		}
