@@ -264,7 +264,8 @@ namespace Deployer
                     var r = i.Reference;
                     
                     // strip obvious beginning of the reference
-                    var removableStart = $"^/{dBase.ShrSegm}/{Module}/{i.Target}/";
+                    //var removableStart = $"^/{dBase.ShrSegm}/{Module}/{i.Target}/";
+                    var removableStart = Exter.StripStdSvnLayoutFromUrl( i.Reference )+"/";
                     if( r.StartsWith( removableStart ) )
                     {
                         r = r.Substring( removableStart.Length );

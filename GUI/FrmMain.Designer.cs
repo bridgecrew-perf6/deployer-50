@@ -146,7 +146,7 @@
 			this.btnPinInstallToRelease.Name = "btnPinInstallToRelease";
 			this.btnPinInstallToRelease.Size = new System.Drawing.Size(141, 50);
 			this.btnPinInstallToRelease.TabIndex = 8;
-			this.btnPinInstallToRelease.Text = "Pin to release";
+			this.btnPinInstallToRelease.Text = "Link";
 			this.btnPinInstallToRelease.UseVisualStyleBackColor = true;
 			this.btnPinInstallToRelease.Click += new System.EventHandler(this.btnPinInstallToRelease_Click);
 			// 
@@ -211,9 +211,9 @@
 			this.label6.AutoSize = true;
 			this.label6.Location = new System.Drawing.Point(19, 381);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(126, 17);
+			this.label6.Size = new System.Drawing.Size(122, 17);
 			this.label6.TabIndex = 3;
-			this.label6.Text = "Shared Resources";
+			this.label6.Text = "Resources Linked";
 			// 
 			// btnEditReleaseExternals
 			// 
@@ -289,9 +289,9 @@
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(799, 381);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(136, 17);
+			this.label5.Size = new System.Drawing.Size(113, 17);
 			this.label5.TabIndex = 17;
-			this.label5.Text = "App Modules Linked";
+			this.label5.Text = "Releases Linked";
 			// 
 			// bsModules
 			// 

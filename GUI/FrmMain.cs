@@ -33,6 +33,7 @@ namespace Deployer
 				ctx.ModuleIndex = index;
 				ctx.ReloadReleases();
 				ctx.ReloadReleaseExternals();
+				UpdateControls();
 			};
 
 			lbReleases.SelectedIndexChanged += (object sender, System.EventArgs e) =>
@@ -40,6 +41,7 @@ namespace Deployer
 				int index = lbReleases.SelectedIndex;
 				ctx.ReleaseIndex = index;
 				ctx.ReloadReleaseExternals();
+				UpdateControls();
 			};
 
 			lbInstalls.SelectedIndexChanged += (object sender, System.EventArgs e) =>
@@ -47,6 +49,7 @@ namespace Deployer
 				int index = lbInstalls.SelectedIndex;
 				ctx.InstallIndex = index;
 				ctx.ReloadInstallExternals();
+				UpdateControls();
 			};
 
 		}
@@ -90,6 +93,7 @@ namespace Deployer
 				) )
 				{
 					ctx.ReloadReleases( destReleaseName );	// select the newly created one
+					ctx.ReloadReleaseExternals();
 					UpdateControls();
 				}
 			}
