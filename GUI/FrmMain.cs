@@ -142,7 +142,8 @@ namespace Deployer
 		{
 			// /command:properties /path:"file:///D:/Work/svn/xxx/repo/releases/IG/Head" /property:svn:externals	
 			string url = ctx.GetReleaseUrl( ctx.Release );
-			string cmdLine = $"/command:properties /path:\"{url}\" /property:svn:externals";
+			//string cmdLine = $"/command:properties /path:\"{url}\" /property:svn:externals";
+			string cmdLine = $"/command:repobrowser /path:\"{url}\"";
 			ctx.dBase.RunTortoiseProc( cmdLine );
 		}
 
@@ -156,7 +157,8 @@ namespace Deployer
 		private void btnEditInstallExternals_Click(object sender, EventArgs e)
 		{
 			string url = ctx.GetInstallUrl( ctx.Install );
-			string cmdLine = $"/command:properties /path:\"{url}\" /property:svn:externals";
+			//string cmdLine = $"/command:properties /path:\"{url}\" /property:svn:externals";
+			string cmdLine = $"/command:repobrowser /path:\"{url}\"";
 			ctx.dBase.RunTortoiseProc( cmdLine );
 		}
 
