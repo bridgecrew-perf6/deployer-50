@@ -43,7 +43,8 @@ namespace Deployer.Repo
 			
 			// replace the link with a new one
 			var ei = extItems[foundAt];
-			var relativizedUrl = Exter.TryMakeRelativeReference( releaseUrl, info.RepositoryRoot.AbsoluteUri );
+			string relativizedUrl;
+			Exter.TryMakeRelativeReference( client, releaseUrl, info.RepositoryRoot.AbsoluteUri, out relativizedUrl );
 			var newEI = new SvnExternalItem( ei.Target, relativizedUrl );
 			extItems[foundAt] = newEI;
 

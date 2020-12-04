@@ -247,4 +247,21 @@ Extrahovat externalsy z aktuálního installs a zobrazit dole.
 * Pokud Target již existuje a je jiný, varuje že se přelinkovává na jinou verzi.
 
 
+# Relativizace odkazu do jiného repozitáře
+
+http://192.168.1.105/svn/BIST/trunk
+http://192.168.1.105/svn/modelsBinaries/missiontrModels/trunk
+
+
+RepoUrl: http://192.168.1.105/svn/BIST/
+FullRef: http://192.168.1.105/svn/modelsBinaries/missiontrModels/trunk
+Extern:  ^/../modelsBinaries/missiontrModels/trunk
+
+Odříznout z domovského Repo url poslední segment - získáme bázové url pro repozitáře na serveru, a taky jméno domovského repozitáře
+ http://192.168.1.105/svn/
+
+Pokud FullRef začíná stejně, leží tedy na stejném serveru
+  Získáme jméno repozitáře z Fullref jako poslední segment FullUrl.
+  Pokud je fullRef jméno repo shodné se jménem domovského repozitáře, použijeme rep-root-relative ^/xxx
+  Pokud se liší, jde o odkaz do jiného repozitáře, použijeme ^/../<fullRefRepoName>/xxx
 

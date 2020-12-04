@@ -263,7 +263,7 @@ namespace Deployer
                 {
                     var r = i.Reference;
                     
-                    // strip obvious beginning of the reference
+                    // strip the unimportant beginning of the link, show just the link/branch type and revision number
                     //var removableStart = $"^/{dBase.ShrSegm}/{Module}/{i.Target}/";
                     var removableStart = Exter.StripStdSvnLayoutFromUrl( i.Reference )+"/";
                     if( r.StartsWith( removableStart ) )
@@ -305,7 +305,7 @@ namespace Deployer
 				{
                     var r = i.Reference;
                     
-                    // strip obvious beginning of the reference
+                    // strip the unimportant beginning of the reference, show just the linked release name
                     var removableStart = $"^/{dBase.RelSegm}/{i.Target}/";
                     if( r.StartsWith( removableStart ) )
                     {

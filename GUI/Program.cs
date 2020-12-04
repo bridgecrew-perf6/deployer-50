@@ -41,6 +41,8 @@ namespace Deployer
 			//Test7();
 			//Test8();
 			//Test9();
+			//Test10();
+			//Test11();
 
 			var ctx = Context.Instance;
 
@@ -206,5 +208,37 @@ namespace Deployer
 
 			}
 		}
+
+		
+		static void Test10()
+		{
+			var homeUri = new Uri("http://192.168.1.105/svn/BIST/release");
+			var tgtUri = SvnTools.GetNormalizedUri( new Uri("http://192.168.1.105/svn/BIST/../modelsBinaries/missiontrModels/trunk") );
+
+			var client = new SvnClient();
+
+			SvnInfoEventArgs homeInfo;
+			if( !client.GetInfo( homeUri, out homeInfo) )
+				return;
+
+			string homeRepoUrl = homeInfo.RepositoryRoot.AbsoluteUri;
+
+			SvnInfoEventArgs tgtInfo;
+			if( !client.GetInfo( tgtUri, out tgtInfo) )
+				return;
+
+			string tgtRepoUrl = tgtInfo.RepositoryRoot.AbsoluteUri;
+
+			string relativizedUrl;
+			Exter.TryMakeRelativeReference( client, tgtUri.AbsoluteUri, homeRepoUrl, out relativizedUrl );
+
+
+
+		}
+
+		static void Test11()
+		{
+		}
+
 	}
 }

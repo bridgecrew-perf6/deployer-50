@@ -56,6 +56,17 @@ namespace Deployer.Repo
 			return false;
 		}
 
+
+		public static void ParseRepoRootUrlToServerAndRepo( string repoRootUrl, out string serverRootUrl, out string repoName )
+		{
+			if( repoRootUrl.EndsWith("/") )
+				repoRootUrl = repoRootUrl.Substring(0, repoRootUrl.Length-1);// strip ending '/'
+
+			serverRootUrl = System.IO.Path.GetDirectoryName( repoRootUrl.Replace('/', '\\') ).Replace('\\', '/')+"/";
+			repoName = System.IO.Path.GetFileName( repoRootUrl.Replace('/', '\\') ).Replace('\\', '/');
+		}
+
+
 		
 		/// <summary>
 		/// 
@@ -69,7 +80,24 @@ namespace Deployer.Repo
 			var url = ei.Reference;
 			result = url;
 			
-			if( url.StartsWith("^") )
+			if( url.StartsWith("^/../") )
+			{
+				var relativeUrl = url.Substring(1);
+
+				// get repo root
+				SvnInfoEventArgs info;
+				if( !client.GetInfo( new Uri(hostUrl), out info) )
+					return false;
+
+				// normalize <server>/repo1/../repo2/xxx to <server>/repo2/xxx
+				string combinedUrl = CombineUrls( info.RepositoryRoot.AbsoluteUri, relativeUrl );
+				var combinedNormalizedUri = SvnTools.GetNormalizedUri( new Uri(combinedUrl) );
+				result = combinedNormalizedUri.AbsoluteUri;
+
+				return true;
+			}
+			else
+			if( url.StartsWith("^/") )
 			{
 				var relativeUrl = url.Substring(1);
 
@@ -86,21 +114,24 @@ namespace Deployer.Repo
 			{
 				// FIXME: add support
 				Logger.Error($"Unsupported relative external '{url}'");
-				return false;
+				throw new Exception($"Unsupported relative external '{url}'");
+				//return false;
 			}
 			else
 			if( url.StartsWith("..") )
 			{
 				// FIXME: add support
 				Logger.Error($"Unsupported relative external '{url}'");
-				return false;
+				throw new Exception($"Unsupported relative external '{url}'");
+				//return false;
 			}
 			else
 			if( url.StartsWith("/") )
 			{
 				// FIXME: add support
 				Logger.Error($"Unsupported relative external '{url}'");
-				return false;
+				throw new Exception($"Unsupported relative external '{url}'");
+				//return false;
 			}
 			else
 			{
@@ -112,17 +143,51 @@ namespace Deployer.Repo
 			//return false;
 		}
 
-		public static string TryMakeRelativeReference( string absUrl, string repoRootUrl )
+		// tries to find relative external reference
+		// it true is returned, relativeRef contains relativized path
+		// if false is returned, relativeRef contains original absUrl
+		public static bool TryMakeRelativeReference( SvnClient client, string absUrl, string repoRootUrl, out string relativeRef )
 		{
+			relativeRef = absUrl;
+
 			if( !repoRootUrl.EndsWith("/") )
 				repoRootUrl+="/";
 
+
+			// same server & repository?
 			if( absUrl.StartsWith( repoRootUrl ) )
 			{
 				var relativePart = absUrl.Substring( repoRootUrl.Length );
-				return $"^/{relativePart}";
+				relativeRef = $"^/{relativePart}";
+				return true;
 			}
-			return absUrl;
+
+			string homeServerRootUrl;
+			string homeRepoName;
+			Exter.ParseRepoRootUrlToServerAndRepo( repoRootUrl, out homeServerRootUrl, out homeRepoName );
+
+			
+			SvnInfoEventArgs tgtInfo;
+			if( !client.GetInfo( new SvnUriTarget( absUrl ), out tgtInfo ) )
+				return false;
+			
+			string tgtRepoRootUrl = tgtInfo.RepositoryRoot.AbsoluteUri;
+			string tgtServerRootUrl;
+			string tgtRepoName;
+			Exter.ParseRepoRootUrlToServerAndRepo( tgtRepoRootUrl, out tgtServerRootUrl, out tgtRepoName );
+
+			if( !absUrl.StartsWith( tgtRepoRootUrl ) ) 
+					return false; // this should not happen!
+			string inRepoPath = absUrl.Substring( tgtRepoRootUrl.Length );
+
+			// same server? (different repo name then...)
+			if( homeServerRootUrl == tgtServerRootUrl )
+			{
+				relativeRef = $"^/../{tgtRepoName}/{inRepoPath}";
+				return true;
+			}
+
+			return false;
 		}
 
 
