@@ -1,22 +1,38 @@
 # Deployer
-
-![](Deployer.png)
-
-## Purpose
-
 * Maintains a software project deployment structure in a SVN repository.
 
 * Composes releases from different application modules from versioned components (shared resources). 
 
 * Picks what to deploy on what site.
 
-## Repository-oriented
+![](Deployer.png)
+
+## Command line
+`Deployer.exe [<url of svn repository>]`
+
+**Example 1**
+
+`Deployer.exe`
+
+Starts the Deployer with no explicit repository URL. The URL needs to be entered manually. If the Deployer's working directory is set to within a working copy, Deployer determines the URL of the repository automatically.
+
+**Example 2**
+
+`Deployer.exe svn://svn.server.com/yourrepo/`
+
+Starts the Deployer with given repository URL. 
+
+## Repository-oriented, working with TortoiseSVN
 
 Deployer works directly with a svn repository on the server.
 
-Deployer can be started from wherever place having access to the svn server.
+Deployer does not require any local working copies to be checked out. It does not load anything from local data files. Everything is read from and stored to the repository on the server.
 
-Deployer does not use any local working copies nor any other local data files. Everything is read from and stored to the repository on the server.
+Deployer can be started from whatever place having access to the svn server.
+
+Deployer launches the TortoiseSVN Repo-browser and TortoiseSVN Checkout dialog.
+
+![](OperationFlow.png)
 
 **Note:**
 Everything what Deployer can do can be done manually as well by using standard subversion client operations manipulating with the repository.
@@ -51,14 +67,14 @@ The repository is expected to have the following structure:
   * whatever/component/folder/structure
     * trunk
   * etc...
-* **releases**
+* **release**
   * <app module name>
     * head
       * Master   *<--- Here the externals to shared are placed. This is referenced from installs.*
     * integration
     * candidate
     * final
-* **installs**
+* **install**
   * whatever/deployment/site
     * trunk *<--- Here the externals to releases are placed*
 
@@ -97,9 +113,9 @@ The repository is expected to have the following structure:
 ## Release types
 Deployer recognizes the following predefined types of releases that differ in what link type they use.
  *  **head** ... uses HEAD externals
- *  **integration** ... uses PEG externals
- *  **candidate** ... uses BRANCH external
- *  **final** ... uses TAG externals
+ *  **integration** ... uses PEG externals (pins the trunk to its current revision)
+ *  **candidate** ... uses BRANCH external (creates a branch for each linked resource)
+ *  **final** ... uses TAG externals (creates a tag for each linked resource)
 
 ## New release creation
 A new release is always created as a copy of an existing release. 
@@ -119,9 +135,9 @@ Deployer supports easy linking of selected release to given installation.
 
 Deployer does not handle the authentication in any way.
 
-It assumes the all the svn repositories used have been already accessed before using a svn client that has already cached all the credentials necessary. That applies to the main repository as well as to all repositories referenced using svn:externals links.
+It relies on the credentials already being cached by the previous access to the repositories via a svn client (TortoiseSVN) on the same computer.
 
-If authentication is still required for some repository, the Deployer most likely crashes with some authentication related exception dialog.
+If the credentials are not yet cached and the authentication is still required for some repository, the Deployer most likely crashes with some authentication related exception dialog.
 
-Resolution: use Tortoise SVN to connect to the repository and check "Remeber user name and password" when asked for credentials. Run Deployer again, this time it should be ok.
+**Resolution:** use Tortoise SVN to connect to the repository and check "Remember user name and password" when asked for credentials. Run Deployer again, this time it should be ok.
 
