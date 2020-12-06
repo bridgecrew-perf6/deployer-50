@@ -62,20 +62,20 @@ It was tested to work well with TortoiseSVN version 1.13.
 The repository is expected to have the following structure:
 
 * **shared**
-  * whatever/component/folder/structure
+  * *whatever/component/folder/structure*
     * trunk *<--- this is referenced from releases using externals*
-  * whatever/component/folder/structure
+  * *whatever/component/folder/structure*
     * trunk
   * etc...
 * **release**
-  * <app module name>
+  * *app module name*
     * head
       * Master   *<--- Here the externals to shared are placed. This is referenced from installs.*
     * integration
     * candidate
     * final
 * **install**
-  * whatever/deployment/site
+  * *whatever/deployment/site*
     * trunk *<--- Here the externals to releases are placed*
 
 ## Link types used
