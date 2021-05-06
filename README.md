@@ -5,6 +5,12 @@
 
 * Picks what to deploy on what site.
 
+* Visualizes project repository structure in a human friendly way
+
+* Makes repetitive operations easy (like creation of branch on many sub-repositories/externals).
+
+
+
 ![](Deployer.png)
 
 ## Command line
@@ -36,8 +42,6 @@ Deployer launches the TortoiseSVN Repo-browser and TortoiseSVN Checkout dialog.
 
 **Note:**
 Everything what Deployer can do can be done manually as well by using standard subversion client operations manipulating with the repository.
-
-Deployer just visualizes the repository structure in a human friendly way and makes repetitive operations easy (like creation of branch on many sub-repositories).
 
 ## Subversion versions supported
 
